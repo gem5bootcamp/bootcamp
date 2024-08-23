@@ -546,12 +546,12 @@ cache_hierarchy = NoCache()
 
 ## 03-checkpoint-and-restore
 
-Next, let's set up a simple single channel memory with 3GB.
+Next, let's set up a simple single channel memory with 3GiB.
 
 ```python
-# Let's set up a SingleChannelDDR4_2400 memory with 3GB size
+# Let's set up a SingleChannelDDR4_2400 memory with 3GiB size
 from gem5.components.memory.single_channel import SingleChannelDDR4_2400
-memory = SingleChannelDDR4_2400(size="3GB")
+memory = SingleChannelDDR4_2400(size="3GiB")
 #
 ```
 
@@ -710,10 +710,10 @@ For this example, our cache hierarchies, memory types, and CPU types are differe
 ```python
 # restoring script
 cache_hierarchy = PrivateL1CacheHierarchy(
-    l1d_size="32kB",
-    l1i_size="32kB"
+    l1d_size="32KiB",
+    l1i_size="32KiB"
 )
-memory = DualChannelDDR4_2400(size="3GB")
+memory = DualChannelDDR4_2400(size="3GiB")
 processor = SimpleProcessor(
     cpu_type=CPUTypes.TIMING,
     isa=ISA.X86,
@@ -726,7 +726,7 @@ processor = SimpleProcessor(
 ```python
 # checkpointing script
 cache_hierarchy = NoCache()
-memory = SingleChannelDDR4_2400(size="3GB")
+memory = SingleChannelDDR4_2400(size="3GiB")
 processor = SimpleProcessor(
     cpu_type=CPUTypes.KVM,
     isa=ISA.X86,
@@ -738,7 +738,7 @@ processor = SimpleProcessor(
 
 ## 03-checkpoint-and-restore
 
-These changes all fall within the limits of the restrictions, but if we change the memory size from `3GB` to `2GB`, we will see the following error.
+These changes all fall within the limits of the restrictions, but if we change the memory size from `3GiB` to `2GiB`, we will see the following error.
 
 ```bash
 src/mem/physical.cc:462: fatal: Memory range size has changed! Saw 3221225472, expected 2147483648

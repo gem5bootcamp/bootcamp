@@ -122,7 +122,7 @@ gem5 run-mem.py
 
 Results for running with 16 GiB/s, 32 GiB/s, 64 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
 |-----------|-----------------|---------------------|---------------------|
 | 16 GiB/s  | 100%            | 17.180288           | 17.180288           |
 |           | 50%             | 17.180288           | 17.180288           |
@@ -178,7 +178,7 @@ SingleChannelDDR4_2400()
 
 Results for running with 16 GiB/s, 32 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
 |-----------|-----------------|---------------------|---------------------|
 | 16 GiB/s  | 100%            | 13.85856            | 14.557056           |
 |           | 50%             | 13.003904           | 13.811776           |
@@ -231,7 +231,7 @@ from lpddr2 import SingleChannelLPDDR2
 
 Results for running with 16 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
 |-----------|-----------------|---------------------|---------------------|
 | 16 GiB/s  | 100%            | 4.089408            | 4.079552            |
 |           | 50%             | 3.65664             | 3.58816             |

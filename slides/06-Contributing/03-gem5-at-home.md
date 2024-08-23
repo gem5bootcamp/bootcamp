@@ -36,7 +36,7 @@ These links and more information are also available at [https://www.gem5.org/ask
 
 - gem5 performance qualities
    - Single threaded
-   - Consumes lots of RAM (if you want to model 32 GB of memory, it needs 32 GB of memory to model it)
+   - Consumes lots of RAM (if you want to model 32 GiB of memory, it needs 32 GiB of memory to model it)
    - Can take a lot of time
 - Because of this its best to run multiple experiments in parallel
 - Recommended hardware:

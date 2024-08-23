@@ -74,9 +74,9 @@ Single-Writer Multiple-Reader (SWMR) invariant
 
 ## Ruby Components
 
-- **Controller Models** *(e.g, caches)*: Manage coherence state and issue requests
-- **Controller Topology** *(how the caches are connected)*: Determines how messages are routed
-- **Interconnect Model** *(e.g., on-chip routers)*: Determines performance of routing
+- **Controller Models** *(e.g, caches)*: Manage coherence state and issue requests.
+- **Controller Topology** *(how the caches are connected)*: Determines how messages are routed.
+- **Interconnect Model** *(e.g., on-chip routers)*: Determines performance of routing.
 - **Interface** *(how to get messages in/out of Ruby)*
 
 > **Note**: The main goal of Ruby is ***flexibility***, not ***usability***.
@@ -87,7 +87,7 @@ Single-Writer Multiple-Reader (SWMR) invariant
 
 - Implemented in "SLICC"
   - **S**pecification **L**anguage for **I**ncluding **C**ache **C**oherence
-- SLICC is a domain-specific language
+- SLICC is a domain-specific language.
   - Describes the coherence protocol
   - Generates C++ code
   - See `build/.../mem/ruby/protocol` for generated files (but you really don't want to read these.)
@@ -124,15 +124,15 @@ Single-Writer Multiple-Reader (SWMR) invariant
 
 ## Cache state machine outline
 
-- **Parameters**: These are the `SimObject` parameters (and some special things)
-  - **Cache memory**: Where the data is stored
-  - **Message buffers**: Sending and receiving messages from the network
-- **State declarations**: The stable and transient states
-- **Event declarations**: State machine events that will be "triggered"
+- **Parameters**: These are the `SimObject` parameters (and some special things).
+  - **Cache memory**: Where the data is stored.
+  - **Message buffers**: Sending and receiving messages from the network.
+- **State declarations**: The stable and transient states.
+- **Event declarations**: State machine events that will be "triggered".
 - **Other structures and functions**: Entries, TBEs, get/setState, etc.
-- **In ports**: Trigger events based on incoming messages
-- **Actions**: Execute single operations on cache structures
-- **Transitions**: Move from state to state and execute actions
+- **In ports**: Trigger events based on incoming messages.
+- **Actions**: Execute single operations on cache structures.
+- **Transitions**: Move from state to state and execute actions.
 
 **In ports** read **Cache memory** then *trigger* **Events**.
 **Events** cause **Transitions** based on the **State** which execute **Actions**.
@@ -142,16 +142,18 @@ Single-Writer Multiple-Reader (SWMR) invariant
 
 ## Cache memory
 
-- See `src/mem/ruby/structures/CacheMemory`
-- Stores the cache data (in an `Entry` as defined in the SLICC file)
-- Can use the function `cacheProbe()` to get the replacement address when a cache miss occurs
-  - Interacts with replacement policies in `src/mem/cache/replacement_policies`
+- See `src/mem/ruby/structures/CacheMemory`.
+- Stores the cache data (in an `Entry` as defined in the SLICC file).
+- Can use the function `cacheProbe()` to get the replacement address when a cache miss occurs.
+  - Interacts with replacement policies in `src/mem/cache/replacement_policies`.
 
 > **IMPORTANT**: Always call `setMRU()` when you access an `Entry` otherwise the replacement policy won't work.
 
 (You should never have to modify `CacheMemory` unless you're modifying Ruby itself.)
 
 ---
+
+<!-- _class: no-logo -->
 
 ## Message buffers
 
@@ -164,11 +166,11 @@ MessageBuffer * forwardFromDir, network="From", virtual_network="1", vnet_type="
 - The to/from declares them as either "in_port" type or "out_port" type.
 - Virtual network is required when some messages have higher priority than others.
 - `vnet_type` is the message type. "Response" means that the message carries data and is used in Garnet for counting buffer credits.
-- Message buffers have the following interface
-  - `peek()`: Get the head message
+- Message buffers have the following interface:
+  - `peek()`: Get the head message.
   - `pop()`: Remove the head message (Don't forget this or you'll have deadlock!)
-  - `isReady()`: Check if there is a message to read
-  - `recycle()`: Take the head message and put it on the tail (useful to get blocking messages out of the way)
+  - `isReady()`: Check if there is a message to read.
+  - `recycle()`: Take the head message and put it on the tail (useful to get blocking messages out of the way).
   - `stallAndWait()`: Move the head message to a separate queue (don't forget to call `wakeUpDependents()` later!)
 
 ---
@@ -197,11 +199,11 @@ cp -r materials/03-Developing-gem5-models/06-modeling-cache-coherence/MyMSI* gem
 
 ## Declaring a protocol
 
-Modify [`src/mem/ruby/protocol/MyMSI.slicc`](../../gem5/src/mem/ruby/protocol/MyMSI.slicc)
+Modify [`src/mem/ruby/protocol/MyMSI.slicc`](../../gem5/src/mem/ruby/protocol/MyMSI.slicc).
 
-- Need to tell Scons about the state machine files
-- In a file called `<protocol>.slicc`
-- You can use the same state machine (`.sm`) files for multiple protocols
+- Need to tell Scons about the state machine files.
+- In a file called `<protocol>.slicc`.
+- You can use the same state machine (`.sm`) files for multiple protocols.
 - Usually, you want to do this in the [`src/mem/ruby/protocol`](../../gem5/src/mem/ruby/protocol/) directory.
 
 ```text
@@ -219,7 +221,7 @@ include "MyMSI-dir.sm";
 
 ## Declaring the message types
 
-Modify [`src/mem/ruby/protocol/MyMSI-msg.sm`](../../gem5/src/mem/ruby/protocol/MyMSI-msg.sm)
+Modify [`src/mem/ruby/protocol/MyMSI-msg.sm`](../../gem5/src/mem/ruby/protocol/MyMSI-msg.sm).
 
 ```c++
 enumeration(CoherenceRequestType, desc="Types of request messages") {
@@ -239,7 +241,7 @@ enumeration(CoherenceResponseType, desc="Types of response messages") {
 
 ## Message buffers for the directory
 
-Modify [`src/mem/ruby/protocol/MyMSI-dir.sm`](../../gem5/src/mem/ruby/protocol/MyMSI-dir.sm)
+Modify [`src/mem/ruby/protocol/MyMSI-dir.sm`](../../gem5/src/mem/ruby/protocol/MyMSI-dir.sm).
 
 ```c++
     // Forwarding requests from the directory *to* the caches.
@@ -311,7 +313,7 @@ build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 ```
 
 While we're waiting on the compilation, let's look at some of the details of the code.
-(It is way too much code to write all yourself today... so let's just read it)
+(It is way too much code to write all yourself today... so let's just read it).
 
 ---
 
@@ -319,7 +321,7 @@ While we're waiting on the compilation, let's look at some of the details of the
 
 ## Let's look at some code: In-port definition
 
-From [`gem5/src/learning_gem5/part3/MSI-cache.sm`](../../gem5/src/learning_gem5/part3/MSI-cache.sm)
+From [`gem5/src/learning_gem5/part3/MSI-cache.sm`](../../gem5/src/learning_gem5/part3/MSI-cache.sm).
 
 ```c++
 in_port(mandatory_in, RubyRequest, mandatoryQueue) {
@@ -354,7 +356,7 @@ in_port(mandatory_in, RubyRequest, mandatoryQueue) {
 
 ## State declarations
 
-See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm)
+See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm).
 
 ```c++
 state_declaration(State, desc="Cache states") {
@@ -369,14 +371,14 @@ state_declaration(State, desc="Cache states") {
 }
 ```
 
-**`AccessPermission:...`**: Used for functional accesses
-**`IS_D`**: Invalid, waiting for data to move to shared
+**`AccessPermission:...`**: Used for functional accesses.
+**`IS_D`**: Invalid, waiting for data to move to shared.
 
 ---
 
 ## Event declarations
 
-See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm)
+See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm).
 
 ```c++
 enumeration(Event, desc="Cache events") {
@@ -398,16 +400,16 @@ enumeration(Event, desc="Cache events") {
 
 ## Other structures and functions
 
-See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm)
+See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol/MSI-cache.sm).
 
-- **Entry**: Declare the data structure for each entry
+- **Entry**: Declare the data structure for each entry.
   - Block data, block state, sometimes others (e.g., tokens)
 - **TBE/TBETable**: Transient Buffer Entry
-  - Like an MSHR, but not exactly (allocated more often)
-  - Holds data for blocks in transient states
+  - Like an MSHR, but not exactly (allocated more often).
+  - Holds data for blocks in transient states.
 - **get/set State, AccessPermissions, functional read/write**
-  - Required to implement AbstractController
-  - Usually just copy-paste from examples
+  - Required to implement AbstractController.
+  - Usually just copy-paste from examples.
 
 ---
 
@@ -415,7 +417,7 @@ See [`gem5/src/mem/ruby/protocol/MSI-cache.sm`](../../gem5/src/mem/ruby/protocol
 
 Not gem5 ports!
 
-- **out_port**: "Rename" the message buffer and declare message type
+- **out_port**: "Rename" the message buffer and declare message type.
 - **in_port**: Much of the SLICC "magic" here.
   - Called every cycle
   - Look at head message
@@ -461,10 +463,10 @@ action(sendGetM, "gM", desc="Send GetM to the directory") {
 }
 ```
 
-**`enqueue`** is like `peek`, but it automatically populates `out_msg`
+**`enqueue`** is like `peek`, but it automatically populates `out_msg`.
 
 Some variables are implicit in actions. These are passed in via `trigger()` in `in_port`.
-These are `address`, `cache_entry`, `tbe`
+These are `address`, `cache_entry`, `tbe`.
 
 ---
 
@@ -483,9 +485,9 @@ transition({IM_AD, SM_AD}, {DataDirNoAcks, DataOwner}, M) {
 }
 ```
 
-- **`(I, Store, IM_AD)`**: From state `I` on event `Store` to state `IM_AD`
-- **`({IM_AD, SM_AD}, {DataDirNoAcks, DataOwner}, M)`**: From either `IM_AD` or `SM_AD` on either `DataDirNoAcks` or `DataOwner` to state `M`
-- Almost always `pop` at the end
+- **`(I, Store, IM_AD)`**: From state `I` on event `Store` to state `IM_AD`.
+- **`({IM_AD, SM_AD}, {DataDirNoAcks, DataOwner}, M)`**: From either `IM_AD` or `SM_AD` on either `DataDirNoAcks` or `DataOwner` to state `M`.
+- Almost always `pop` at the end.
 - Don't forget to use stats!
 
 ---
@@ -504,7 +506,7 @@ You will:
 4. Test the protocol
 5. Find a bug
 6. Fix the bug
-7. Test with the ruby random tester
+7. Test with the Ruby random tester
 
 ---
 
@@ -529,13 +531,13 @@ system.caches.controllers0 time: 73 addr: 0x9100 event: DataDirNoAcks state: IS_
 build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
-Start fixing the errors and fill in the `MyMSI-cache.sm`
+Start fixing the errors and fill in the `MyMSI-cache.sm`.
 
 ---
 
 ## Fixing the errors: Missing transition
 
-- Missing IS_D transition in cache
+- Missing IS_D transition in cache.
   - write the data to the cache
   - deallocate the TBE
   - mark that this is an "external load hit"
@@ -554,10 +556,10 @@ transition(IS_D, {DataDirNoAcks, DataOwner}, S) {
 
 ## Fixing the errors: Missing action
 
-- Fill in the "write data to cache" action
+- Fill in the "write data to cache" action.
   - Get the data out of the message (how to get the message?)
   - Set the cache entry's data (how? where does `cache_entry` come from?)
-  - Make sure to have `assert(is_valid(cache_entry))`
+  - Make sure to have `assert(is_valid(cache_entry))`.
 
 ```c++
 action(writeDataToCache, "wd", desc="Write data to the cache") {
@@ -624,8 +626,8 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
 - Wow! now it should be way faster to see the error!
 - Now, you need to handle this in the cache! `transition(S, Inv, I)`
   - If you get an invalidate...
-  - Send an ack, let the CPU know that this line was invalidated, deallocate the block, pop the queue
-- So, now, hmm, it looks like it works??? But here's still one more
+  - Send an ack, let the CPU know that this line was invalidated, deallocate the block, pop the queue.
+- So, now, hmm, it looks like it works??? But here's still one more.
   - Some transitions are very rare: `transition(I, Store, IM_AD)`
   - Try varying the parameters of the tester (without `ProtocolTrace`!) to find a combination which triggers an error (100000 checks, 8 CPUs, 50ns memory...)
 - Now, you can fix the error!
@@ -652,10 +654,9 @@ transition(I, Store,IM_AD) {}
 
 ```
 
-Run Scons and the Python script again
+Run Scons and the Python script again.
 
-
-------
+---
 
 <!-- _class: code-60-percent no-logo -->
 
@@ -695,9 +696,9 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
 ## Fixing the error: What to do on a store
 
 - Fix the next error (what to do on a store??)
-  - Allocate a block, allocate a TBE, send a message, pop the queue
+  - Allocate a block, allocate a TBE, send a message, pop the queue.
   - Also make sure that all actions that you need
-  - When sending, you need to construct a new message. See `RequestMsg` in `MyMSI-msg.sm`
+  - When sending, you need to construct a new message. See `RequestMsg` in `MyMSI-msg.sm`.
 
 ```c++
  action(sendGetM, "gM", desc="Send GetM to the directory") {
@@ -713,7 +714,7 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
   }
 ```
 
-Run Scons and Python script
+Run Scons and Python script.
 
 ---
 
@@ -747,7 +748,7 @@ build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/ruby_test.py
 
 ## Now that it's working... look at the stats
 
-Re-run the simple pthread test and lets look at some stats!
+Re-run the simple Python test and lets look at some stats!
 
 ```sh
 build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
@@ -774,23 +775,23 @@ build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 `grep RequestTypeMachineType.ST.L1Cache.miss_type_mach_latency_hist_seqr::mean m5out/stats.txt`
 18
 `grep RequestTypeMachineType.LD.L1Cache.miss_type_mach_latency_hist_seqr::mean`
-- multiply by sample size (...::sample) and then add together
+- multiply by sample size (...::sample) and then add together.
 
 ---
 
 ## Ruby config scripts
 
 - Don't follow gem5 style closely :(
-- Require lots of boilerplate
-- Standard Library does a much better job
+- Require lots of boilerplate.
+- Standard Library does a much better job.
 
 ### What's needed in these scripts?
 
 1. Instantiate the controllers
-Here is where you pass all of the parameters to the `.sm` files
-2. Create a `Sequencer` for each CPU (and DMA, etc.)
-More details in a moment
-3. Create and connect all of the network routers
+Here is where you pass all of the parameters to the `.sm` files.
+2. Create a `Sequencer` for each CPU (and DMA, etc.).
+More details in a moment.
+3. Create and connect all of the network routers.
 
 ---
 
@@ -798,9 +799,9 @@ More details in a moment
 
 - You can connect the routers any way you like:
   - Mesh, torus, ring, crossbar, dragonfly, etc.
-- Usually hidden in `create_topology` (see configs/topologies)
-  - Problem: These make assumptions about controllers
-  - Inappropriate for non-default protocols
+- Usually hidden in `create_topology` (see configs/topologies).
+  - Problem: These make assumptions about controllers.
+  - Inappropriate for non-default protocols.
 
 After creating the topology (before simulation), Ruby's network model will find all of the valid paths from one node to another in the on-chip network.
 Thus, the OCN is completely separate from the types of controllers and the protocol.
@@ -822,11 +823,11 @@ for ri in self.routers:
         self.int_links.append(SimpleIntLink(link_id = link_count, src_node = ri, dst_node = rj))
 ```
 
-- **`self.routers`**: One router per controller in this case of point-to-point
-  - Must have a router for "internal" links
-- **`self.ext_links`**: Connects the controller to the router
-  - You can have multiple external links per router, but not for this point-to-point example
-- **`self.int_links`**: Connects the routers to each other
+- **`self.routers`**: One router per controller in this case of point-to-point.
+  - Must have a router for "internal" links.
+- **`self.ext_links`**: Connects the controller to the router.
+  - You can have multiple external links per router, but not for this point-to-point example.
+- **`self.int_links`**: Connects the routers to each other.
 
 ---
 

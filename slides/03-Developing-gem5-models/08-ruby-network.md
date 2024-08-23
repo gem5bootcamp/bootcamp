@@ -94,7 +94,7 @@ Building off of [CHI protocol](07-chi-protocol.md)
 
 ## Create the topology file
 
-Open [../../materials/03-Developing-gem5-models/08-ruby-network/ring.py](../../materials/03-Developing-gem5-models/08-ruby-network/ring.py)
+Open [../../materials/03-Developing-gem5-models/08-ruby-network/ring.py](../../materials/03-Developing-gem5-models/08-ruby-network/ring.py).
 
 Note: There are a lot off oddities in this code. Most of it, you'll just have to take my word for it...
 
@@ -193,7 +193,7 @@ if dma_ctrls:
 ## Create internal links
 
 This is where we create our ring.
-For something different, let's do a uni-directional ring.
+For something different, let's do a unidirectional ring.
 
 ```python
 self.int_links = [

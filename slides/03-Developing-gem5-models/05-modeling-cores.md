@@ -88,7 +88,7 @@ It is constructed from information in the `StaticInst` object.
 
 It contains information on:
 
-- PC and predicated next-PC
+- PC and predicted next-PC
 - Instruction result
 - Thread number
 - CPU
@@ -342,7 +342,7 @@ Then follows through to:
 ```
 
 This is the function that calls the `execute` function of the `StaticInst` object which will carry out all the work for the instruction.
-**Note:** This is because `Add` non-memory instruction. Memory instructions are immediately executed. Without memory accesses instructions are simulated as being instantaneous.
+**Note:** This is because `Add` is a non-memory instruction. Memory instructions are immediately executed. Without memory accesses instructions are simulated as being instantaneous.
 
 ---
 
@@ -368,7 +368,7 @@ The latter two functions are used for memory instructions such as Timed memory a
 
 ## The gem5 ISA Parser
 
-So far we've seen, how an instruction is decoded then executed in gem5.
+So far we've seen how an instruction is decoded then executed in gem5.
 However, we haven't seen how this decoding process is defined and the behavior of the instrucion's execution is defined.
 This is where it gets complicated...
 
@@ -397,13 +397,13 @@ The painful truth is that to extend or add to an ISA most developers will `grep`
 
 ## Let's try to understand one RISC-V instruction
 
-In the following we are going to look at the `LW` instruction in the RISC-V and how it is specified, decoded, and executed in gem5.
+In the following we are going to look at the `LW` instruction in RISC-V and how it is specified, decoded, and executed in gem5.
 
 ---
 
 ## The RISC-V instruction formats
 
-To understand the RISC-V ISA, and how the gem5 RISC-V decoder works, we need to understand the base instruction formats.
+To understand the RISC-V ISA and how the gem5 RISC-V decoder works, we need to understand the base instruction formats.
 The base instruction formats are the R, I, S, B, U, and J types which use the following formats:
 
 ![55% bg](05-modeling-cores-img/riscv-32bit-inst-format.png)
@@ -484,7 +484,7 @@ The decoder uses these bitfields to decode the instruction.
 
 ---
 
-Go to "decoder.isa" and search for the `lw` instruction
+Go to [decoder.isa](../../gem5/src/arch/riscv/isa/decoder.isa) and search for the `lw` instruction.
 
 The following shows the path to the instruction definition via parsing of the instruction's `opcode` and `funct3` fields:
 
@@ -511,7 +511,7 @@ decode QUADRANT default Unknown::unknown() {
 
 ### Generating code from the LW ISA definition
 
-You can compare side by side decoder.isa and decode-method.cc.inc to see how the ISA definition is used to generate the CPP decoder code.
+You can compare [decoder.isa](../../gem5/src/arch/riscv/isa/decoder.isa) and [decode-method.cc.inc](../../materials/03-Developing-gem5-models/05-modeling-cores/build-riscv-generated-files/decode-method.cc.inc) side by side to see how the ISA definition is used to generate the CPP decoder code.
 
 This is done by the ISA parser script (isa_parser.py) which is used by the gem5 build system to generate the CPP code.
 
@@ -637,7 +637,7 @@ You can follow this through to see how this constructor is generated but it's a 
 
 ---
 
-From "decoder-ns.hh.inc", you can see the generated class definition for the `Lw` instruction:
+From [decoder-ns.hh.inc](../../materials/03-Developing-gem5-models/05-modeling-cores/build-riscv-generated-files/decoder-ns.hh.inc), you can see the generated class definition for the `Lw` instruction:
 
 ```cpp
     class Lw : public Load
@@ -701,7 +701,7 @@ ADD16, Rs1, Rs2
 
 ---
 
-Lets run the [materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/add16_test.py)
+Lets run the [materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/add16_test.py).
 
 This file runs the binary for [add16_test.c](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/src/add16_test.c). This is a C program that executes the `add 16` instruction.
 

@@ -587,7 +587,7 @@ class LinearGenerator(AbstractGenerator):
         self,
         num_cores: int = 1,
         duration: str = "1ms",
-        rate: str = "100GB/s",
+        rate: str = "100GiB/s",
         block_size: int = 64,
         min_addr: int = 0,
         max_addr: int = 32768,
@@ -606,7 +606,7 @@ class RandomGenerator(AbstractGenerator):
         self,
         num_cores: int = 1,
         duration: str = "1ms",
-        rate: str = "100GB/s",
+        rate: str = "100GiB/s",
         block_size: int = 64,
         min_addr: int = 0,
         max_addr: int = 32768,
@@ -689,7 +689,7 @@ Add a traffic generator right below
 `memory = SingleChannelDDR3_1600()` with the following lines.
 
 ```python
-generator = LinearGenerator(num_cores=1, rate="1GB/s")
+generator = LinearGenerator(num_cores=1, rate="1GiB/s")
 ```
 
 ###
@@ -719,7 +719,7 @@ cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 
 memory = SingleChannelDDR3_1600()
 
-generator = LinearGenerator(num_cores=1, rate="1GB/s")
+generator = LinearGenerator(num_cores=1, rate="1GiB/s")
 
 motherboard = TestBoard(
     clk_freq="3GHz",
@@ -917,7 +917,7 @@ class HybridGenerator(AbstractGenerator):
         self,
         num_cores: int = 2,
         duration: str = "1ms",
-        rate: str = "1GB/s",
+        rate: str = "1GiB/s",
         block_size: int = 8,
         min_addr: int = 0,
         max_addr: int = 131072,

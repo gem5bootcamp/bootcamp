@@ -15,9 +15,9 @@ title: gem5/SST Integration
 
 We're not going to do this today.
 
-What we'll do instead is use a docker container with sst installed.
+What we'll do instead is use a Docker container with SST installed.
 
-Run the following to go into the docker container.
+Run the following to go into the Docker container.
 Note: You shouldn't use a container interactively like this, but I'm lazy.
 
 ```sh
@@ -34,7 +34,7 @@ To use gem5 as a "component" in SST, you need to build it as a library.
 This is yet another unique build target...
 Note: if you're building on a Mac, it's not ".so" it's ".dynlib"
 
-Compiling gem5 as a library
+Compiling gem5 as a library:
 
 ```bash
 cd gem5/
@@ -46,20 +46,20 @@ scons build/for_sst/libgem5_opt.so -j8 --without-tcmalloc --duplicate-sources
 
 ## Building the gem5 component in gem5
 
-Compiling gem5 component
+Compiling gem5 component:
 
 ```bash
 cd ext/sst
 cp Makefile.linux Makefile
 ```
 
-Change the line with `ARCH=RISCV` to `ARCH=for_sst`
+Change the line with `ARCH=RISCV` to `ARCH=for_sst`.
 
 ```sh
 make -j8
 ```
 
-Running the simulation,
+Running the simulation:
 
 ```bash
 sst --add-lib-path=. sst/example.py
@@ -97,9 +97,9 @@ sst --add-lib-path=. sst/example.py
 How to set up gem5 in another simulator?
 
 * Step 1: Setting up the gem5 Python environment.
-    * Need to manually import the m5 module
+    * Need to manually import the m5 module.
 * Step 2: Reading the gem5 Python system configuration file.
-    * This includes setting up the communication data path for gem5 and the other simulator
+    * This includes setting up the communication data path for gem5 and the other simulator.
 
 
 * Notes:
@@ -149,10 +149,10 @@ http://sst-simulator.org/
     * SST::Event (similar to gem5::Event)
         * Sent via SST::Link
 
-* Parallelization,
+* Parallelization:
     * SST partitions components to multiple partitions.
     * Communication between partitions are done via MPI.
-    * The partitioning process can be done automatically or manually
+    * The partitioning process can be done automatically or manually.
 
 ---
 
@@ -173,7 +173,7 @@ http://sst-simulator.org/
 * gem5 provides:
     * OutgoingRequestBridge: a Request port sending requests to external components.
     * SSTResponderInterface: an interface for a Response port for an external component.
-* gem5 Component is an SST::Component, which has multiple SSTResponder's implementing the SSTReponderInterface.
+* gem5 Component is a SST::Component, which has multiple SSTResponder's implementing the SSTReponderInterface.
 * The packet translation happens within the gem5 Component.
 
 ---
@@ -186,7 +186,7 @@ http://sst-simulator.org/
 
 ## gem5/SST Integration
 
-* Example (arm and RISC-V):
+* Example (Arm and RISC-V):
     * gem5 as an SST component: gem5/ext/sst/
     * SST system configuration: gem5/ext/sst/sst/example.py
     * gem5 system configuration: gem5/configs/example/sst/riscv_fs.py
@@ -218,7 +218,7 @@ http://sst-simulator.org/
     * Each gem5 component is in a different partition.
     * Communication between gem5 instances can be done via gem5 PIO devices.
 * Why?
-    * There are more parallelism at the node granularity.
+    * There is more parallelism at the node granularity.
 
 ---
 
