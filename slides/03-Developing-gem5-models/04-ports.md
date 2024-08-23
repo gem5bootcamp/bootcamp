@@ -934,7 +934,7 @@ If you remember from [Event Driven Simulation](./03-event-driven-sim.md), we als
 
 Now that we have declared `nextReqSendEvent`, we can schedule `nextReqSendEvent` in `InspectorGadget::recvTimingReq`. We will see in a few slides why it is helpful to have a function that decides if and when `nextReqSendEvent` should be scheduled.
 
-What I do when I write `SimObjects` is that, for every `event`, I create a function to schedule that event. I name these functions with `schedule` prefixing the name of the event. Let's go ahead and declare `scheduleNextReqSendEvent` under the `private` scope in `InspectorGadget`.
+What I do when I write `SimObjects` is that for every `event`, I create a function to schedule that event. I name these functions with `schedule` prefixing the name of the event. Let's go ahead and declare `scheduleNextReqSendEvent` under the `private` scope in `InspectorGadget`.
 
 Open `inspector_gadget.hh` and add the following lines:
 

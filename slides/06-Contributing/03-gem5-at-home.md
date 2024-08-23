@@ -12,6 +12,8 @@ author: William Shaddix
 
 ---
 
+<!-- _class: no-logo -->
+
 ## Getting help
 
 gem5 has lots of resources to get help:
@@ -26,7 +28,7 @@ gem5 has lots of resources to get help:
       - [gem5-announce@gem5.org : For general gem5 announcements](https://harmonylists.io/list/gem5-announce.gem5.org)
 3. [Youtube videos](https://www.youtube.com/@gem5)
 
-These links and more information are also available at [https://www.gem5.org/ask-a-question/](https://www.gem5.org/ask-a-question/)
+These links and more information are also available at [https://www.gem5.org/ask-a-question/](https://www.gem5.org/ask-a-question/).
 
 > We do our best to get to questions, but they often go unanswered. This isn't because it's not a good question, but because we don't have enough volunteers.
 
@@ -34,11 +36,11 @@ These links and more information are also available at [https://www.gem5.org/ask
 
 ## Running gem5 at home
 
-- gem5 performance qualities
+- gem5 performance qualities:
    - Single threaded
    - Consumes lots of RAM (if you want to model 32 GiB of memory, it needs 32 GiB of memory to model it)
    - Can take a lot of time
-- Because of this its best to run multiple experiments in parallel
+- Because of this its best to run multiple experiments in parallel.
 - Recommended hardware:
    - High single thread performance
    - Doesn't need many cores
@@ -62,24 +64,26 @@ See our Dockerfiles for the most up-to-date version information:
 
 ---
 
-## Using dockerfiles
+<!-- _class: no-logo -->
 
-If you have trouble, we have docker images.
+## Using Dockerfiles
 
-Here's a generic docker command that should work.
+If you have trouble, we have Docker images.
+
+Here's a generic Docker command that should work.
 
 ```sh
 docker run --rm -v $(pwd):$(pwd) -w $(pwd) ghcr.io/gem5/ubuntu-24.04_all-dependencies:v24-0 <your command>
 ```
 
 - Runs the image at `https://ghcr.io/gem5/ubuntu-24.04_all-dependencies:v24-0`.
-- Automatically removes the docker image (`--rm`)
-- Sets it up so that the current directory (`-v $(pwd):$(pwd)`) is available inside the docker container
-- Sets the working directory to the current directory (`-w $(pwd)`)
+- Automatically removes the Docker image (`--rm`).
+- Sets it up so that the current directory (`-v $(pwd):$(pwd)`) is available inside the Docker container.
+- Sets the working directory to the current directory (`-w $(pwd)`).
 - Runs a command.
 - Every command will now need to run with this to make sure the libraries are set up correctly.
 
-> I cannot **strongly enough** emphasize that you should not run interactively in the docker container. Use it to just run one command at a time.
+> I cannot **strongly enough** emphasize that you should not run interactively in the Docker container. Use it to just run one command at a time.
 
 ---
 
@@ -95,9 +99,9 @@ The source will be at [`gem5/utils/dockerfiles/devcontainer`](https://github.com
 
 ## Recommended practices
 
-- Unless planning on contributing to gem5 or you need to use recently developed work, use the ```stable``` branch.
-- Create branches off of stable.
-- Don't modify parameters of python files in `src/`. Instead create *extensions* of stdlib types or SimObjects.
+- Unless you are planning on contributing to gem5 or need to use recently developed work, use the `stable` branch.
+- Create branches off of `stable`.
+- Don't modify parameters of Python files in `src/`. Instead create *extensions* of stdlib types or SimObjects.
 - Don't be afraid to read the code. The code is the best documentation.
 
 ---
