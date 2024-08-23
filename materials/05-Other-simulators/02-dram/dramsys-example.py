@@ -16,12 +16,12 @@ memory = DRAMSysMem(
     configuration="/workspaces/2024/gem5/ext/dramsys/DRAMSys/configs/ddr4-example.json",
     recordable=True,
     resource_directory="/workspaces/2024/gem5/ext/dramsys/DRAMSys/configs",
-    size="4GB",
+    size="4GiB",
 )
 
 generator = LinearGenerator(
     duration="250us",
-    rate="40GB/s",
+    rate="40GiB/s",
     num_cores=1,
     max_addr=memory.get_size(),
 )

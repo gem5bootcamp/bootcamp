@@ -28,7 +28,7 @@ from gem5.resources.resource import obtain_resource
 
 from gem5.simulate.simulator import Simulator
 
-memory = SingleChannelDDR4_2400(size="2GB")
+memory = SingleChannelDDR4_2400(size="2GiB")
 
 caches = PrivateL1SharedL2CacheHierarchy(
     l1d_size="32KiB",

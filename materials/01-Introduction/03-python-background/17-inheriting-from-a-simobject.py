@@ -48,7 +48,7 @@ class L1ICache(L1Cache):
     """Simple L1 instruction cache with default values"""
 
     # Set the size
-    size = "32kB"
+    size = "32KiB"
 
     def __init__(self):
         super().__init__()

@@ -40,13 +40,13 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
 system.mem_mode = 'timing'
-system.mem_ranges = [AddrRange('512MB')] # Create an address range
+system.mem_ranges = [AddrRange('512MiB')] # Create an address range
 addr_range = system.mem_ranges[0]
 
 system.tgen = PyTrafficGen() # Create a traffic generator
 
 system.l1cache = SimpleCache()
-system.l1cache.size = '32kB'
+system.l1cache.size = '32KiB'
 
 
 system.membus = SystemXBar(width = 64, max_routing_table_size = 16777216)
@@ -59,7 +59,7 @@ system.mem_ctrl.mem_sched_policy = "fcfs"
 
 # memory interface parameters
 system.mem_ctrl.dram = DDR4_2400_16x4()
-system.mem_ctrl.dram.range = AddrRange('512MB')
+system.mem_ctrl.dram.range = AddrRange('512MiB')
 system.mem_ctrl.dram.read_buffer_size = 32
 system.mem_ctrl.dram.write_buffer_size = 64
 

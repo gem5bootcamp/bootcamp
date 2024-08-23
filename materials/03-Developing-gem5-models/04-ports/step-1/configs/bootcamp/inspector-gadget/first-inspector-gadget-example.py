@@ -44,7 +44,7 @@ cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 ## memory = ?
 
 generator = HybridGenerator(
-    num_cores=6, rate="1GB/s", duration="1ms", data_limit=128
+    num_cores=6, rate="1GiB/s", duration="1ms", data_limit=128
 )
 
 motherboard = TestBoard(

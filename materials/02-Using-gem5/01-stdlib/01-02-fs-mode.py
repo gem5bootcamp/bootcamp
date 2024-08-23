@@ -24,4 +24,4 @@ cache_hierarchy = MESITwoLevelCacheHierarchy(
 )
 
 # Set up the system memory.
-memory = SingleChannelDDR3_1600(size="3GB")
+memory = SingleChannelDDR3_1600(size="3GiB")
