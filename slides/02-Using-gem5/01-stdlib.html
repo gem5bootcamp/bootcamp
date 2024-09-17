@@ -112,9 +112,7 @@ This can result in scripts with hundreds of lines of code even for the most basi
 <li>Error-prone configurations.</li>
 <li>A lack of portability between different simulation setups.</li>
 </ul>
-<p>In addition, while there is no &quot;one size fits all&quot; for gem5 users, most users have similar needs and requirements for their simulations, requiring only a few modifications off of some commonly used configuration systems.<br />
-Prior to the creation of the standard library users would regularly circulate long, complex scripts and hack at them endlessly.<br />
-Such practices inspired the creation of the gem5 Standard Library.</p>
+<p>In addition, while there is no &quot;one size fits all&quot; for gem5 users, most users have similar needs and requirements for their simulations, requiring only a few modifications off of some commonly used configuration systems. Prior to the creation of the standard library users would regularly circulate long, complex scripts and hack at them endlessly. Such practices inspired the creation of the gem5 Standard Library.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="3" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="51">
 <h2 id="what-is-the-standard-library">What is the Standard Library?</h2>
@@ -210,11 +208,11 @@ Most boards are tied to a specific ISA and require more complex designs to run F
 <p>The <code>obtain_resource</code> function downloads the files needed to run the specified workload. In this case &quot;arm-gapbs-bfs-run&quot; is a BFS workload from the GAP Benchmark Suite.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="51">
-<h3 id="gem5-resources">gem5 Resources</h3>
+<h2 id="gem5-resources">gem5 Resources</h2>
 <p>We will return to gem5 Resources later in the bootcamp, but for now, you can think of it as a way to download and manage files needed for your simulation but don't actually specify the simulated computer system hardware.<br />
 Typically it is used to download and manage workloads, disk images, checkpoints needed for the simulation.</p>
 <p>Here we can search the available resources: <a href="https://resources.gem5.org/">https://resources.gem5.org/</a>.</p>
-<p>Here is the arm-gabps-bss-run resource: <a href="https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0">https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0</a>.</p>
+<p>Here is the arm-gabps-bfs-run resource: <a href="https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0">https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0</a>.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="51">
 <h2 id="next-set-up-the-simulation">Next, set up the simulation</h2>
@@ -528,7 +526,7 @@ memory = SingleChannelDDR3_1600(size=<span class="hljs-string">&quot;3GB&quot;</
 <h2 id="what-to-do-when-linux-boots">What to do when Linux boots</h2>
 <p>Here we set the Full System workload.<br />
 The <code>set_kernel_disk_workload</code> function for the X86Board takes a kernel, a disk image, and, optionally, a command to run.</p>
-<p>This is the command to run after the system has booted. The first <code>m5 exit</code> will stop the simulation so we can switch the CPU cores from KVM to timing and continue the simulation to run the echo command, sleep for a second, then, again, call <code>m5 exit</code> to terminate the simulation. After simulation has ended you may inspect <code>m5out/system.pc.com_1.device</code> to see the echo output.</p>
+<p>This is the command to run after the system has booted. The first <code>m5 exit</code> will stop the simulation so we can switch the CPU cores from timing to o3 and continue the simulation to run the echo command, sleep for a second, then, again, call <code>m5 exit</code> to terminate the simulation. After simulation has ended you may inspect <code>m5out/board.pc.com_1.device</code> to see the echo output.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">command = (
     <span class="hljs-string">&quot;m5 exit;&quot;</span>
     + <span class="hljs-string">&quot;echo &#x27;This is running on O3 CPU cores.&#x27;;&quot;</span>
@@ -628,7 +626,7 @@ When the 2nd exit is triggered the default action is triggered as there is nothi
 <li><strong><code>run()</code></strong>: Run the simulation</li>
 <li><strong><code>get/set_max_ticks(max_tick)</code></strong>: Set the absolute tick to stop simulation. Generates a <code>MAX_TICK</code> exit event that can be handled.</li>
 <li><strong><code>schedule_max_insts(inst_number)</code></strong>: Set the number of instructions to run before stopping. Generates a <code>MAX_INSTS</code> exit event that can be handled. Note that if running multiple cores, this happens if <em>any</em> core reaches this number of instructions.</li>
-<li><strong>`get_stats()``</strong>: Get the statistics from the simulation. Returns a dictionary of statistics.</li>
+<li><strong><code>get_stats()</code></strong>: Get the statistics from the simulation. Returns a dictionary of statistics.</li>
 </ul>
 <p>See <a href="../../gem5/src/python/gem5/simulate/simulator.py"><code>src/python/gem5/simulate/simulator.py</code></a> for more details.</p>
 <p>We will be covering much more about how to use the <code>Simulator</code> object in other parts of the bootcamp.</p>
