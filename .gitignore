@@ -25,3 +25,5 @@ x86-ubuntu-gpu-ml-isca.gz
 *.html
 
 build/
+
+*.DS_Store

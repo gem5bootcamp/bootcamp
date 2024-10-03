@@ -1,5 +1,7 @@
 {
-    "python.analysis.extraPaths": ["gem5/src/python"],
+    "python.analysis.extraPaths": [
+        "gem5/src/python"
+    ],
     "editor.rulers": [
         79
     ],
@@ -10,8 +12,11 @@
     ],
     "markdown.marp.enableHtml": true,
     "hediet.vscode-drawio.globalVars": {
-         "pageScale": "1",
-         "pageWidth": "1160",
-         "pageHeight": "440"
+        "pageScale": "1",
+        "pageWidth": "1160",
+        "pageHeight": "440"
+    },
+    "workbench.editorAssociations": {
+        "*.svg": "hediet.vscode-drawio-text"
     }
 }

@@ -11,16 +11,16 @@ from components.processors import HW5O3CPU
 
 from workloads.array_sum_workload import (
     NaiveArraySumWorkload,
-    NoResultRaceArraySumWorkload,
-    NoCacheBlockRaceArraySumWorkload,
+    ChunkingNoResultRaceArraySumWorkload,
+    ChunkingNoBlockRaceArraySumWorkload,
 )
 
 from gem5.simulate.simulator import Simulator
 
 workloads = {
     "naive": NaiveArraySumWorkload,
-    "false_sharing": NoCacheBlockRaceArraySumWorkload,
-    "blocking": NoCacheBlockRaceArraySumWorkload,
+    "false_sharing": ChunkingNoResultRaceArraySumWorkload,
+    "blocking": ChunkingNoBlockRaceArraySumWorkload,
 }
 
 parser = argparse.ArgumentParser()

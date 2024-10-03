@@ -55,7 +55,7 @@ board = X86Board(
 # will stop the simulation so we can switch the CPU cores from KVM to timing
 # and continue the simulation to run the echo command, sleep for a second,
 # then, again, call `m5 exit` to terminate the simulation. After simulation
-# has ended you may inspect `m5out/system.pc.com_1.device` to see the echo
+# has ended you may inspect `m5out/board.pc.com_1.device` to see the echo
 # output.
 command = (
     "m5 exit;"
@@ -68,8 +68,8 @@ command = (
 # Here we specifying the kernel, disk image, and the command to run after
 # booting the system.
 board.set_kernel_disk_workload(
-    kernel=obtain_resource("x86-linux-kernel-4.4.186"),
-    disk_image=obtain_resource("x86-ubuntu-18.04-img"),
+    kernel=obtain_resource("x86-linux-kernel-5.4.0-105-generic"),
+    disk_image=obtain_resource("x86-ubuntu-22.04-img"),
     readfile_contents=command,
 )
 
