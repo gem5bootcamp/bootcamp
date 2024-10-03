@@ -34,7 +34,7 @@ cd /workspaces/2024
 # MFMA example
 ```sh
 cd /workspaces/2024/
-cp –r materials/04-GPU-model/mfma_fp32/ gem5-resources/src/gpu/mfma_fp32
+cp -r materials/04-GPU-model/mfma_fp32/ gem5-resources/src/gpu/mfma_fp32
 cd gem5-resources/src/gpu/mfma_fp32
 docker run --rm -v /workspaces/2024:/workspaces/2024 -w ${PWD} ghcr.io/gem5/gpu-fs:latest make
 cd /workspaces/2024/
@@ -63,12 +63,12 @@ docker run --rm -v /workspaces/2024:/workspaces/2024 -w ${PWD} ghcr.io/gem5/gpu-
 cd /workspaces/2024
 ```
 ```sh
-/usr/local/bin/gem5-vega gem5/configs/example/gpufs/mi200.py --kernel ./vmlinux-gpu-ml-isca --disk-image ./x86-ubuntu-gpu-ml-isca --app ./gem5-resources/src/gpu/square/bin/square --no-kvm-perf --checkpoint-dir ./gpuckpt
+/usr/local/bin/gem5-vega -d createckpt gem5/configs/example/gpufs/mi200.py --kernel ./vmlinux-gpu-ml-isca --disk-image ./x86-ubuntu-gpu-ml-isca --app ./gem5-resources/src/gpu/square/bin/square --no-kvm-perf --checkpoint-dir ./gpuckpt
 ```
 
 # To restore from checkpoint
 ```sh
-/usr/local/bin/gem5-vega gem5/configs/example/gpufs/mi200.py --kernel ./vmlinux-gpu-ml-isca --disk-image ./x86-ubuntu-gpu-ml-isca --app ./gem5-resources/src/gpu/square/bin/square --no-kvm-perf --restore-dir ./gpuckpt
+/usr/local/bin/gem5-vega -d restoreckpt gem5/configs/example/gpufs/mi200.py --kernel ./vmlinux-gpu-ml-isca --disk-image ./x86-ubuntu-gpu-ml-isca --app ./gem5-resources/src/gpu/square/bin/square --no-kvm-perf --restore-dir ./gpuckpt
 ```
 
 # PyTorch example

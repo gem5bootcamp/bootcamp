@@ -15,7 +15,7 @@ title: gem5/SST Integration
 
 The structural simulator toolkit (SST) is another computer architecture simulator, yet, unlike gem5, SST has been developed to explore _large_,  _highly concurrent_  designs. In particular, it has utility in helping researchers with interests in communication considerations between computer components and distributed system architectures.
 
-The focus of its design is the holistic  effects of  protocols, networks, and  other communication considerations that concern computer architects. It focuses considerably less on accurately simulating individual machines or components within machines.
+The focus of its design is the holistic effects of  protocols, networks, and  other communication considerations that concern computer architects. It focuses considerably less on accurately simulating individual machines or components within machines.
 
 ---
 
@@ -87,12 +87,13 @@ The Dockerfile for this container can be found at [util/dockerfiles/sst/Dockerfi
 
 To enter the container, run the following command:
 
+
 ```sh
 cd /workspaces/lpos2024
 docker run --volume `pwd`:`pwd` -w `pwd` -it --rm ghcr.io/gem5/sst-env:latest
 ```
 
-That should be all your need to do. You should now be in an environment with SST installed.
+That should be all you need to do. You should now be in an environment with SST installed.
 
 ---
 
@@ -191,6 +192,7 @@ component1 = sst.Component("c1", "simpleElementExample.example0")
 
 This is creating two  `example0` components with names `c0` and `c1`. It should be noted that all SST components much have a unique name.
 
+
 **Note**: A complete example can be found in the SST repository at [`materials/05-Other-simulators/01-sst/sst-tutorial.py`](/materials/05-Other-simulators/01-sst/01-sst-tutorial.py).
 
 ---
@@ -283,7 +285,6 @@ The `ext/sst/gem5.hh` file (found inside the gem5 repo) is relatively simple and
 <!-- _class: code-60-percent -->
 
 ```cpp
-
 class gem5Component: public SST::Component
 {
   public:
@@ -463,7 +464,6 @@ cache_bus.addParams( { "bus_frequency" : cpu_clock_rate } )
 ```
 
 ---
-
 
 ```python
 system_port = gem5_node.setSubComponent(port_list[0], "gem5.gem5Bridge", 0)

@@ -53,7 +53,7 @@ memory = InspectedMemory(
 
 generator = HybridGenerator(
     num_cores=4,
-    rate="1GB/s",
+    rate="1GiB/s",
     duration="1ms",
 )
 

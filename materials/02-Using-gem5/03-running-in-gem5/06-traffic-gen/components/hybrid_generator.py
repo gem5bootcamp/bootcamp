@@ -46,7 +46,7 @@ class HybridGenerator(AbstractGenerator):
         self,
         num_cores: int = 2,
         duration: str = "1ms",
-        rate: str = "1GB/s",
+        rate: str = "1GiB/s",
         block_size: int = 8,
         min_addr: int = 0,
         max_addr: int = 131072,

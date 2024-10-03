@@ -19,18 +19,18 @@ title: Extending gem5 with DRAMSim and DRAMSys
 ## Why use an external simulator?
 
 > Note: I don't advise using external DRAM simulators.
-> gem5's DRAM model is accurate enough for most research
+> gem5's DRAM model is accurate enough for most research.
 
 The main reasons to use an external DRAM simulator are:
 
-- For comparisons between gem5's DRAM models and other simulators (e.g., when developing a new DRAM model for gem5)
-- When you have already modified the other simulator and need to drive it with realistic traffic
+- For comparisons between gem5's DRAM models and other simulators (e.g., when developing a new DRAM model for gem5).
+- When you have already modified the other simulator and need to drive it with realistic traffic.
 
 ---
 
 ## Getting DRAMSys
 
-See [`gem5/ext/dramsys/README`](../../gem5/ext/dramsys/README) for deatils.
+See [`gem5/ext/dramsys/README`](../../gem5/ext/dramsys/README) for details.
 
 Run
 
@@ -53,21 +53,21 @@ scons build/NULL/gem5.opt -j$(nproc)
 
 ## Using DRAMSys
 
-See <https://github.com/tukl-msd/DRAMSys> for documentation on DRAMSys
+See <https://github.com/tukl-msd/DRAMSys> for documentation on DRAMSys.
 
 To configure gem5 to use DRAMSys, you can use the standard library.
 DRAMSys can be used as a `MemorySystem` just like the `SingleChannel` or `MultiChannel` memories.
 
 Open [`materials/05-Other-simulators/02-dram/dramsys-example.py`](../../materials/05-Other-simulators/02-dram/dramsys-example.py).
 
-Add the following lines to create a memory system with DDR4 from DRAMSys
+Add the following lines to create a memory system with DDR4 from DRAMSys.
 
 ```python
 memory = DRAMSysMem(
     configuration="/workspaces/2024/gem5/ext/dramsys/DRAMSys/configs/ddr4-example.json",
     recordable=True,
     resource_directory="/workspaces/2024/gem5/ext/dramsys/DRAMSys/configs",
-    size="4GB",
+    size="4GiB",
 )
 ```
 
@@ -81,11 +81,11 @@ Options for DRAMSys:
   - Must be absolute or relative to your run path.
 - `resource_directory`: Pointer to the configs directory.
   - Must be absolute or relative to your run path.
-- `recordable`: Whether DRAMSys should record a trace file
+- `recordable`: Whether DRAMSys should record a trace file.
 
 ### Note on implementation
 
-- DRAMSys uses TLM 2.0
+- DRAMSys uses TLM 2.0.
 - This is a good example of how to get gem5 to talk to a TLM object.
 
 ---
@@ -96,7 +96,7 @@ Options for DRAMSys:
 ../../../gem5/build/NULL/gem5.opt dramsys-example.py
 ```
 
-```test
+```text
 board.memory.dramsys.DRAMSys.controller0  Total Time:     250027920 ps
 board.memory.dramsys.DRAMSys.controller0  AVG BW:          87.97 Gb/s |  11.00 GB/s |  73.67 %
 board.memory.dramsys.DRAMSys.controller0  AVG BW\IDLE:     87.97 Gb/s |  11.00 GB/s |  73.67 %
@@ -111,9 +111,9 @@ Outputs a file, `board.memory.dramsys.DRAMSys_ddr4-example_example_ch0.tdb` whic
 
 ## DRAMSim
 
-Similar to DRAMSys in how to obtain and use
+Similar to DRAMSys in how to obtain and use.
 
-> Note: DRAMSim3 is not tested regularly
+> Note: DRAMSim3 is not tested regularly.
 
 See [`gem5/ext/dramsim3/README`](../../gem5/ext/dramsim3/README) for details.
 

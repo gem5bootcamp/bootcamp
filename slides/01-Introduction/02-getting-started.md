@@ -183,9 +183,9 @@ board = X86DemoBoard()
 
 The X86DemoBoard has the following properties:
 
-- Single Channel DDR3, 2GB Memory.
+- Single Channel DDR3, 2GiB Memory.
 - A 4 core 3GHz processor (using gem5’s "timing" model).
-- A MESI Two Level Cache Hierarchy, with 32kB data and instruction case and a 1MB L2 Cache.
+- A MESI Two Level Cache Hierarchy, with 32KiB data and instruction case and a 1MiB L2 Cache.
 - Will be run as a Full-System simulation.
 
 Source is available: [src/python/gem5/prebuilt/demo/x86_demo_board.py](../../gem5/src/python/gem5/prebuilt/demo/x86_demo_board.py).

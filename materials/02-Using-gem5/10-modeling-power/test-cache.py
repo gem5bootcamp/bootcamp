@@ -48,7 +48,7 @@ board = TestBoard(
         l3_size="2MiB",
         l3_assoc=32,
     ),
-    memory=DualChannelDDR4_2400(size="2GB"),
+    memory=DualChannelDDR4_2400(size="2GiB"),
     clk_freq="3GHz",
 )
 

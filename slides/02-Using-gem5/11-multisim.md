@@ -110,8 +110,8 @@ Put this line near the top of your configuration script.
 ## Use simple Python constructs to define multiple simulations
 
 ```python
-for data_cache_size in ["8kB","16kB"]:
-    for instruction_cache_size in ["8kB","16kB"]:
+for data_cache_size in ["8KiB","16KiB"]:
+    for instruction_cache_size in ["8KiB","16KiB"]:
         cache_hierarchy = PrivateL1CacheHierarchy(
             l1d_size=data_cache_size,
             l1i_size=instruction_cache_size,

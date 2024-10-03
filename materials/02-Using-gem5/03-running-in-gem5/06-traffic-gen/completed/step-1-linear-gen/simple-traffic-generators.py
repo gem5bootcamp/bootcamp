@@ -43,7 +43,7 @@ cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 
 memory = SingleChannelDDR3_1600()
 
-generator = LinearGenerator(num_cores=1, rate="1GB/s")
+generator = LinearGenerator(num_cores=1, rate="1GiB/s")
 
 motherboard = TestBoard(
     clk_freq="3GHz",

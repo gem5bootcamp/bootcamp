@@ -30,7 +30,7 @@ from m5.objects import CPU, L1Cache
 
 cpu = CPU() # Create the CPU SimObject
 cpu.clock = '1GHz' # Set it's parameters
-cpu.l1_cache = L1Cache(size="64kB") # Connect it to other SimObjects.
+cpu.l1_cache = L1Cache(size="64KiB") # Connect it to other SimObjects.
 
 # ... more configuration ...
 ```
@@ -1022,7 +1022,7 @@ class L1ICache(L1Cache):
 
     def __init__(self):
         # Set the size
-        self.size = "32kB"
+        self.size = "32KiB"
         super().__init__()
 
     # This is the implementation needed for

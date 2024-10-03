@@ -158,7 +158,7 @@ In this step, we will implement our new `SimObject` called `InspectorGadget`. `I
 
 - Step 1: We will implement `InspectorGadget` to forward traffic from CPU to memory and back, causing latency for queueing traffic.
 - Step 2: We will extend `InspectorGadget` to *inspect* the traffic, causing further delay (for `1 cycle`) for inspection.
-- Step 3: We will extend `InpsectorGadget` like below:
+- Step 3: We will extend `InspectorGadget` like below:
   - It will do multiple inspection every cycle, resulting in higher traffic throughput.
   - It will expose `inspection_latency` as a parameter.
 - Step 4: We will extend `InspectorGadget` to allow for pipelining of the inspections.
@@ -225,7 +225,7 @@ touch SConscript
 
 ---
 
-## InspectoGadget: SimObject Declaration File
+## InspectorGadget: SimObject Declaration File
 
 Now, inside `InspectorGadget.py`, let's define `InspectorGadget` as a `ClockedObject`. To do that, we need to import `ClockedObject`. Do it by adding the following line to `InspectorGadget.py`.
 
@@ -528,7 +528,7 @@ Let's take a deeper look into what we added for class `MemSidePort`.
 1: Like `CPUSidePort`, a `MemSidePort` instance holds a pointer to its `owner` with `InspectorGadget* owner`. We do this to access the owner when we receive `responses`, i.e. when `recvTimingResp` is called.
 2: When `MemSidePort::sendTimingReq` receives false, it means the request was blocked. We track a pointer to this blocked `Packet` in `PacketPtr blockedPacket` so that we can retry the request later.
 3: Function `blocked` tells us if we are blocked by the memory side, i.e. still waiting to receive a `retry request` from memory side.
-4: Function `sendPacket` is a wrapper around `sendTimingReq` to give our code more structure. Notice we don't need to definte `sendTimingReq` as it is already defined by `TimingRequestProtocol`.
+4: Function `sendPacket` is a wrapper around `sendTimingReq` to give our code more structure. Notice we don't need to define `sendTimingReq` as it is already defined by `TimingRequestProtocol`.
 5: We will need to implement all of the functions that relate to moving packets – the ones that start with `recv`. We will use `owner` to implement most of the functionality of these functions within `InspectorGadget`.
 
 ---
@@ -861,7 +861,7 @@ InspectorGadget::recvFunctional(PacketPtr pkt)
 
 Looking at `recvAtomic`, this function returns a value of type `Tick`. This value is supposed to represent the latency of the access if that access was done in singularity, i.e atomically/without being interleaved. **CAUTION**: This latency is not an accurate representation of the actual latency of the access in a real setup. In a real setup there are many accesses happening at the same time and most of the time accesses do not happen atomically.
 
-Let's add *one* cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call `clockPeriod` from the parent class of `InspectorGadget`, which is `ClockedObject`. This function returns the period of the `clk_domain` in `Ticks`. Add the following code to define of `InspectorGadget::recvAtomic` in `inspector_gadget.cc`.
+Let's add *one* cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call `clockPeriod` from the parent class of `InspectorGadget`, which is `ClockedObject`. This function returns the period of the `clk_domain` in `Ticks`. Add the following code to define `InspectorGadget::recvAtomic` in `inspector_gadget.cc`.
 
 ```cpp
 Tick
@@ -932,9 +932,9 @@ If you remember from [Event Driven Simulation](./03-event-driven-sim.md), we als
 
 ## Managing the Schedule of nextReqSendEvent
 
-Now, that we have declared `nextReqSendEvent`, we can schedule `nextReqSendEvent` in `InspectorGadget::recvTimingReq`. We will see in a few slides why it is helpful to have a function that decides if and when `nextReqSendEvent` should be scheduled.
+Now that we have declared `nextReqSendEvent`, we can schedule `nextReqSendEvent` in `InspectorGadget::recvTimingReq`. We will see in a few slides why it is helpful to have a function that decides if and when `nextReqSendEvent` should be scheduled.
 
-What I do when I write `SimObjects` is that, for every `event`, I create a function to schedule that event. I name these functions with `schedule` prefixing the name of the event. Let's go ahead and a declare `scheduleNextReqSendEvent` under the `private` scope in `InspectorGadget`.
+What I do when I write `SimObjects` is that for every `event`, I create a function to schedule that event. I name these functions with `schedule` prefixing the name of the event. Let's go ahead and declare `scheduleNextReqSendEvent` under the `private` scope in `InspectorGadget`.
 
 Open `inspector_gadget.hh` and add the following lines:
 
@@ -951,7 +951,7 @@ We'll see that one `event` might be scheduled in multiple locations in the code.
 
 ## Back to InspectorGadget::recvTimingReq
 
-Now, we can finally go ahead and add a function call to `scheduleNextReqSendEvent` in `InspectorGadget::recvTimingReq`. Since we are assuming it will take **one** `cycle` to insert an item to `inspectionBuffer`, we're going to pass `nextCycle()` as `when` argument.
+Now, we can finally go ahead and add a function call to `scheduleNextReqSendEvent` in `InspectorGadget::recvTimingReq`. Since we are assuming it will take **one** `cycle` to insert an item to `inspectionBuffer`, we're going to pass `nextCycle()` as the `when` argument.
 
 This is how `InspectorGadget::recvTimingReq` should look after all the changes.
 
@@ -1028,7 +1028,7 @@ Here are a few things to note about `processNextReqSendEvent`:
 
 > Let's take a step back...
 
-Are we done with `cpuSidePort` yet? If we look at `InspectorGadget::recvTimingReq`, we return false when there is not enough space in `inspectionBuffer`. Also, if you remember, if the `reponsder` (in our case `InspectorGadget`) rejects a `request` because it's busy (in our case because we don't have enough space in `inspectionBuffer`), the `responder` has to send a `request retry` when it becomes available (in our case, when there is room freed in `inspectionBuffer`). So let's go ahead and send a `request retry` to the `peer` of `cpuSidePort`. We need to send that retry **one cycle later**. So, we need another event for that. Let's go ahead and add it.
+Are we done with `cpuSidePort` yet? If we look at `InspectorGadget::recvTimingReq`, we return false when there is not enough space in `inspectionBuffer`. Also, if you remember, if the `responder` (in our case `InspectorGadget`) rejects a `request` because it's busy (in our case because we don't have enough space in `inspectionBuffer`), the `responder` has to send a `request retry` when it becomes available (in our case, when there is room freed in `inspectionBuffer`). So let's go ahead and send a `request retry` to the `peer` of `cpuSidePort`. We need to send that retry **one cycle later**. So, we need another event for that. Let's go ahead and add it.
 
 ---
 <!-- _class: no-logo code-50-percent -->
@@ -1067,7 +1067,7 @@ InspectorGadget::scheduleNextReqRetryEvent(Tick when)
 <!-- _class: code-60-percent -->
 ## Back to processNextReqSendEvent
 
-Now all that is left to do in `processNextReqSendEvent` is to try scheduling `nextReqRetry` for `nextCycle` after we have sent a `Packet`. Let's go ahead and add that our code. This is how `processNextReqSendEvent` should look like after these changes:
+Now all that is left to do in `processNextReqSendEvent` is to try scheduling `nextReqRetry` for `nextCycle` after we have sent a `Packet`. Let's go ahead and add that to our code. This is how `processNextReqSendEvent` should look after these changes:
 
 ```cpp
 void
@@ -1122,7 +1122,7 @@ Make sure to add the following include statement as well since we're using `std:
 
 We're almost done with defining the whole `request` path. The only thing that remains is to react to `request retries` we receive from the `peer` of `memSidePort`.
 
-Since we tracked the last `Packet` that we have tried to send, we can simply try sending that packet again. Let's consider the following for this function:
+Since we tracked the last `Packet` that we tried to send, we can simply try sending that packet again. Let's consider the following for this function:
 
 1: We shouldn't receive a `request retry` if we're not blocked.
 2: For now, let's accept that there might be scenarios when a `request retry` will arrive but when we try to send `blockedPacket`, it will be rejected again. So let's account for that when writing `MemSidePort::recvReqRetry`.
@@ -1133,7 +1133,7 @@ Since we tracked the last `Packet` that we have tried to send, we can simply try
 
 ## MemSidePort::recvReqRetry cont.
 
-Add the following code to `inspector_gadget.cc` to define `MemSidePort::recvReqRetry`
+Add the following code to `inspector_gadget.cc` to define `MemSidePort::recvReqRetry`.
 
 ```cpp
 void
@@ -1252,7 +1252,7 @@ To find the definition for all these functions please look at the [complete vers
 
 ## InspectorGadget::InspectorGadget
 
-Now, what we have to do is define the constructor of `InspectorGadget`. To do it add the following code to `inspector_gadget.cc`:
+Now we have to define the constructor of `InspectorGadget`. To do it add the following code to `inspector_gadget.cc`:
 
 ```cpp
 InspectorGadget::InspectorGadget(const InspectorGadgetParams& params):
@@ -1275,7 +1275,7 @@ InspectorGadget::InspectorGadget(const InspectorGadgetParams& params):
 
 ## SimObject::init
 
-Last step before compilation is to define the `init` function. Since `InspectorGadget` is a `Responder` object, the convention is to let `peer` ports know that they can ask for their address range when the ranges become known. `init` is a `virtual` and `public` function from `SimObject`. Let's go ahead and declare it to override it. To do this, add the following declaration to the `public` scope of `InspectorGadget` in `inspector-gadget.hh`.
+The last step before compilation is to define the `init` function. Since `InspectorGadget` is a `Responder` object, the convention is to let `peer` ports know that they can ask for their address range when the ranges become known. `init` is a `virtual` and `public` function from `SimObject`. Let's go ahead and declare it to override it. To do this, add the following declaration to the `public` scope of `InspectorGadget` in `inspector-gadget.hh`.
 
 ```cpp
 virtual void init() override;
@@ -1397,7 +1397,7 @@ class InspectedMemory(ChanneledMemory):
 
 ## first-inspector-gadget-example.py
 
-Now, let's just simply add the following imports to `gem5/configs/bootcamp/inspector-gadget/first-inspector-gadget-example.py`:
+Now, let's add the following imports to `gem5/configs/bootcamp/inspector-gadget/first-inspector-gadget-example.py`:
 
 ```python
 from components.inspected_memory import InspectedMemory
@@ -1436,9 +1436,9 @@ In the next slide, there is a recording of my terminal when running the command 
 In this step, we see how to add statistics to our `SimObjects` so that we can measure things with them. For now let's add statistics to measure the following.
 
 1- The sum of the queueing latency in `inspectionBuffer` experienced by each `Packet`. Let's use the name `totalInspectionBufferLatency` for this statistic.
-2- Total number of `requests` forwarded. Let'use the name `numRequestsFwded`.
+2- Total number of `requests` forwarded. Let's use the name `numRequestsFwded`.
 3- The sum of the queueing latency in `responseBuffer` experienced by each `Packet`. Let's use the name `totalResponseBufferLatency` for this statistic.
-4- Total number of `requests` forwarded. Let'use the name `numResponsesFwded`.
+4- Total number of `requests` forwarded. Let's use the name `numResponsesFwded`.
 
 ---
 <!-- _class: no-logo code-50-percent -->
@@ -1489,7 +1489,7 @@ InspectorGadget::InspectorGadgetStats::InspectorGadgetStats(InspectorGadget* ins
 
 Few things to note:
 
-1- Initialize our stat object by adding `stats(this)` to the initialization list in the constructor `InspectorGdaget`.
+1- **Important:** initialize our stat object by adding `stats(this)` to the initialization list in the constructor `InspectorGdaget`.
 2- `statistics::Group::Group` takes a pointer to an object of `statistics::Group` that will be its parent. Class `SimObject` inherits from `statistics::Group` so we can use a pointer to `InspectorGadget` as that input.
 3- The macro `ADD_STAT` registers and initializes our statistics that we have defined under the struct. The order of arguments are `name`, `unit`, `description`. To rid yourself of any headache, make sure the order of `ADD_STAT` macros match that of statistic declaration.
 
@@ -1512,7 +1512,7 @@ InspectorGadget::processNextReqSendEvent()
 }
 
 void
-InspectorGadget::processNextReqSendEvent()
+InspectorGadget::processNextRespSendEvent()
 {
     // ...
     stats.numResponsesFwded++;
@@ -1524,7 +1524,7 @@ InspectorGadget::processNextReqSendEvent()
 
 ## Measuring Queueing Latencies
 
-To measure the queueing latency in `inspectionBuffer` and `responseBuffer` we need to track the time each `Packet` is inserted in these buffers as well the time they are removed. We already track the insertion time for each `Packet`. We only need to make it accessible from the outside. We can use `curTick()` in `processNextReqSendEvent` and `processNextRespSendEvent` to track the time each `Packet` is removed from `inspectionBuffer` and `responseBuffer` respectively.
+To measure the queueing latency in `inspectionBuffer` and `responseBuffer` we need to track the time at which each `Packet` is inserted in these buffers as well the time they are removed. We already track the insertion time for each `Packet`. We only need to make it accessible from the outside. We can use `curTick()` in `processNextReqSendEvent` and `processNextRespSendEvent` to track the time each `Packet` is removed from `inspectionBuffer` and `responseBuffer` respectively.
 
 Let's go ahead an add the following function inside the `public` scope of `TimedQueue`.
 
@@ -1538,7 +1538,7 @@ Let's go ahead an add the following function inside the `public` scope of `Timed
 
 ## Measuring Queueing Latencies cont.
 
-This is how `processNextReqSendEvent`, `processNextRespSendEvent` would look for measuring all statistics.
+This is how `processNextReqSendEvent` and `processNextRespSendEvent` look for measuring all statistics.
 
 ```cpp
 void
@@ -1551,7 +1551,7 @@ InspectorGadget::processNextReqSendEvent()
 }
 
 void
-InspectorGadget::processNextReqSendEvent()
+InspectorGadget::processNextRespSendEvent()
 {
     // ...
     stats.numResponsesFwded++;
@@ -1577,7 +1577,8 @@ Now, let's go ahead and run the simulation again. We don't need to make any chan
 ./build/NULL/gem5.opt configs/bootcamp/inspector-gadget/first-inspector-gadget-example.py
 ```
 
-Now if you search for the name of the stats we added in `m5out/stats.txt`. This is what we will see. **NOTE**: I did by searching for the name of the `InspectorGadget` objects in the file using `grep inspectors m5out/stats.txt` in the base gem5 directory.
+This is what we will see if we search for the name of the stats we added in `m5out/stats.txt`.
+**NOTE**: I searched for the name of the `InspectorGadget` objects in the file using `grep inspectors m5out/stats.txt` in the base gem5 directory.
 
 ```sh
 system.memory.inspectors0.totalInspectionBufferLatency         7334                       # Total inspection buffer latency. (Tick)
@@ -1607,7 +1608,7 @@ system.memory.inspectors1.numResponsesFwded           18                       #
 
 In this step, we're going to add an *inspection* step to the process of forwarding requests that we receive. You'll see that we will **not** create any class that models the inspection. For the purposes of this tutorial, the process of *inspection* is completely trivial; we just care about its latency. In this step, let's just assume that inspection takes `1 cycle` to inspect the `request`.
 
-This is how the `request path` will look like after our changes in this step.
+This is how the `request path` will look after our changes in this step.
 
 `CPUSidePort.recvTimingReq->InspectorGadget.recvTimingReq->[inspection]->InspectorGadget.processNextReqSendEvent->MemSidePort.sendPacket`
 
@@ -1615,12 +1616,15 @@ Again, we need to model latency. Therefore, we need to declare a new event that 
 
 ---
 
+<!-- _class: code-80-percent -->
+
 ## Adding Inspection: Header File
 
 To declare `nextInspectionEvent`, add the following lines under the `private` scope of `InspectorGadget` in `src/bootcamp/inspector-gadget/inspcetor_gadget.hh`.
 
 ```cpp
   private:
+    int output_buffer_entries;
     TimedQueue<PacketPtr> outputBuffer;
 
     EventFunctionWrapper nextInspectionEvent;
@@ -1657,7 +1661,7 @@ Let's get rid of the easy things first. Add the lines below to the initializatio
 
 ### Changing the Request Path: InspectorGadget::recvTimingReq
 
-The next thing we need to is schedule `nextInspectionEvent` in `InspectorGadget::recvTimingReq`. Currently, we schedule `nextReqSendEvent` in `InspectorGadget::recvTimingReq`. This is how the code in `src/bootcamp/inspector-gadget/inspector_gadget.cc` looks like right now (before our changes).
+The next thing we need to is schedule `nextInspectionEvent` in `InspectorGadget::recvTimingReq`. Currently, we schedule `nextReqSendEvent` in `InspectorGadget::recvTimingReq`. This is how the code in `src/bootcamp/inspector-gadget/inspector_gadget.cc` looks right now (before our changes).
 
 ```cpp
 bool
@@ -1674,7 +1678,7 @@ InspectorGadget::recvTimingReq(PacketPtr pkt)
 
 ###
 
-We will just simply replace `scheduleNextReqSendEvent(nextCycle());` with `scheduleNextInspectionEvent(nextCycle());` in this function. This is how the function should look like after the changes.
+We will just simply replace `scheduleNextReqSendEvent(nextCycle());` with `scheduleNextInspectionEvent(nextCycle());` in this function. This is how the function should look after the changes.
 
 ```cpp
 bool
@@ -1694,7 +1698,7 @@ InspectorGadget::recvTimingReq(PacketPtr pkt)
 
 ## Changing the Request Path: InspectorGadget::scheduleNextInspectionEvent
 
-Let's take a step back. Each *inspection* takes a `request` from `inspectionBuffer`, *inspects* the `request` and puts it in `outputBuffer`. To determine whether `nextInspectionEvent` has to be scheduled we need to check **a**) if there is a `Packet` in `inspectionBuffer` and **b**) if there is at least one empty entry in `outputBuffer`. If both conditions are satisfied, we need to calculate the right time it should be scheduled for like we have been doing it already.
+Let's take a step back. Each *inspection* takes a `request` from `inspectionBuffer`, *inspects* the `request` and puts it in `outputBuffer`. To determine whether `nextInspectionEvent` has to be scheduled we need to check **a**) if there is a `Packet` in `inspectionBuffer` and **b**) if there is at least one empty entry in `outputBuffer`. If both conditions are satisfied, we need to calculate the right time it should be scheduled for, like we have been doing already.
 
 Add the following code to `src/bootcamp/inspector-gadget/inspector_gadget.cc` under `namespace gem5` to define `InspectorGadget::scheduleNextInspectionEvent`.
 
@@ -1735,7 +1739,7 @@ Now, let's declare a new class that inherits from `Packet::SenderState`. Let's d
     {
         uint64_t sequenceNumber;
         SequenceNumberTag(uint64_t sequenceNumber):
-            SenderState(), (sequenceNumber)
+            SenderState(), sequenceNumber(sequenceNumber)
         {}
     };
 ```
@@ -1745,7 +1749,7 @@ Now, let's declare a new class that inherits from `Packet::SenderState`. Let's d
 
 ## InspectorGadget::inspectRequest: Declaring Additional Members
 
-Now, let's go ahead and declare and define a function that does the inspection for us. To count the number of displacements we need to keep track of the next *sequence number* we expect. We need to increment this variable every time we receive a response. In addition, we need to generate new *sequence numbers* as well. Therefore, we need to keep track of the next available *sequence number*. Lastly, we need to count the number of displacement in a variable. Let's add that to `InspectorGadgetStats`. Add the following lines under the `private` scope of `InspectorGadgetStats` in `src/bootcamp/inspector-gadget/inspector_gadget.hh`.
+Now, let's go ahead and declare and define a function that does the inspection for us. To count the number of displacements, we need to keep track of the next *sequence number* we expect. We need to increment this variable every time we receive a response. In addition, we need to generate new *sequence numbers* as well. Therefore, we need to keep track of the next available *sequence number*. Lastly, we need to count the number of displacements in a variable. Let's add that to `InspectorGadgetStats`. Add the following lines under the `private` scope of `InspectorGadgetStats` in `src/bootcamp/inspector-gadget/inspector_gadget.hh`.
 
 ```cpp
   private:
@@ -1784,7 +1788,7 @@ Add the following line to the initialization list in `InspectorGadget::Inspector
 
 ## InspectorGadget::inspectRequest
 
-Now, let's go ahead an declare a function that *inspects* `requests` as they are popped from `inspectionBuffer`. To do this, add the following line under the `private` scope of `InspectorGadget` in `src/bootcamp/inspector-gadget/inspector-gadget.hh`.
+Now, let's go ahead and declare a function that *inspects* `requests` as they are popped from `inspectionBuffer`. To do this, add the following line under the `private` scope of `InspectorGadget` in `src/bootcamp/inspector-gadget/inspector-gadget.hh`.
 
 ```cpp
   private:
@@ -1814,7 +1818,7 @@ Now, we need to define the callback function for `nextInspectionEvent`.
 
 To simulate inspection and its latency, we need to pop the first item in `inspectionBuffer`, *inspect* it and push it in the `outputBuffer` for it to be sent to the memory.  Then we can schedule `nextReqSendEvent`  for `nextCycle`.
 
-Now, since `processNextInspectionEvent` is popping items off of `inspectionBuffer`, it now becomes responsible for sending `retry requests` from `cpuSidePort`. This means we need to schedule `nextReqRetryEvent` for `nextCycle` as well.
+Since `processNextInspectionEvent` is popping items off of `inspectionBuffer`, it now becomes responsible for sending `retry requests` from `cpuSidePort`. This means we need to schedule `nextReqRetryEvent` for `nextCycle` as well.
 
 We also need to schedule `nextInspectionEvent` for `nextCycle`. We discussed why before. So far we have added `nextInspectionEvent` after `recvTimingReq`. In the next slides, we change `nextReqSendEvent` accordingly.
 
@@ -1853,7 +1857,7 @@ Now that we have add `nextInspectionEvent` and `outputBuffer`, we need to change
 
 What we are going to change is that `nextReqSendEvent` is going to pop items off of `outputBuffer` instead of `inspectionBuffer`.
 
-This is how `scheduleNextReqSendEvent` in `src/bootcamp/inspector-gadget/inspector_gadget.cc` looks like before the changes.
+This is how `scheduleNextReqSendEvent` in `src/bootcamp/inspector-gadget/inspector_gadget.cc` looks before the changes.
 
 ```cpp
 void
@@ -1869,7 +1873,7 @@ InspectorGadget::scheduleNextReqSendEvent(Tick when)
 }
 ```
 
-This is how it should look like after the changes.
+This is how it should look after the changes.
 
 ```cpp
 void
@@ -1879,7 +1883,7 @@ InspectorGadget::scheduleNextReqSendEvent(Tick when)
     bool have_items = !outputBuffer.empty();
 
     if (port_avail && have_items && !nextReqSendEvent.scheduled()) {
-        Tick schedule_time = align(std::max(when, inspectionBuffer.firstReadyTime()));
+        Tick schedule_time = align(std::max(when, outputBuffer.firstReadyTime()));
         schedule(nextReqSendEvent, schedule_time);
     }
 }
@@ -1897,7 +1901,7 @@ Now, let's go ahead and change the definition of `processNextReqSendEvent`. We n
 3- Remove scheduling of `nextReqRetryEvent`.
 4- Remove measuring of `totalInspectionBufferLatency`.
 
-This is how this function looks like right now.
+This is how this function looks right now.
 
 ```cpp
 void
@@ -1918,14 +1922,14 @@ InspectorGadget::processNextReqSendEvent()
 }
 ```
 
-This is how it should look like after the changes.
+This is how it should look after the changes.
 
 ```cpp
 void
 InspectorGadget::processNextReqSendEvent()
 {
     panic_if(memSidePort.blocked(), "Should never try to send if blocked!");
-    panic_if(!inspectionBuffer.hasReady(curTick()), "Should never try to send if no ready packets!");
+    panic_if(!outputBuffer.hasReady(curTick()), "Should never try to send if no ready packets!");
 
     stats.numRequestsFwded++;
     PacketPtr pkt = outputBuffer.front();
@@ -1971,10 +1975,10 @@ InspectorGadget::inspectResponse(PacketPtr pkt)
 ```
 
 ---
-<!-- _class: no-logo code-50-percent -->
+<!-- _class: no-logo code-50-percent two-col -->
 ## InspectorGadget::processNextRespSendEvent
 
-Now, let's go ahead and call `inspectResponse` in the response path. Do it by adding a function call to `inspectResponse` in `processNextRespSendEvent`. This is how the function should look like after the changes.
+Now, let's go ahead and call `inspectResponse` in the response path. Do it by adding a function call to `inspectResponse` in `processNextRespSendEvent`. This is how the function should look after the changes.
 
 ```cpp
 void
@@ -2011,7 +2015,7 @@ scons build/NULL/gem5.opt -j$(nproc)
 
 Now that we have added a new parameter to class `InspectorGadget`, let's go ahead and extend `InspectedMemory` to expose `output_buffer_entries` as an argument to its constructor (`__init__`).
 
-Open `configs/bootcamp/inspector-gadget/components/inspected_memory.py` and make the appropriate changes. You only need to change `InspecteMemory.__init__`. This is how the function should look like after the changes.
+Open `configs/bootcamp/inspector-gadget/components/inspected_memory.py` and make the appropriate changes. You only need to change `InspectedMemory.__init__`. This is how the function should look after the changes.
 
 ```python
 class InspectedMemory(ChanneledMemory):
@@ -2052,7 +2056,7 @@ Now, let's remove `data_limit` when configuring `HybridGenerator` in `configs/in
 ```python
 generator = HybridGenerator(
     num_cores=6,
-    rate="1GB/s",
+    rate="1GiB/s",
     duration="1ms",
 )
 ```
@@ -2070,7 +2074,7 @@ system.memory.inspectors0.numReqRespDisplacements           14                  
 system.memory.inspectors1.numReqRespDisplacements            6                       # Number of request-response displacements. (Count)
 ```
 
-**PRACTICE**: Add as stat for `totalOutputBufferLatency`.
+**PRACTICE**: Add a stat for `totalOutputBufferLatency`.
 
 ---
 <!-- _class: start -->
@@ -2153,7 +2157,7 @@ Now, let's add the following lines to the initialization list in `InspectorGadge
 
 Now, we need to account for inspection units being available when scheduling `nextInspectionEvent`. To do this we will need to find the first available inspection unit. We should not schedule `nextInspectionEvent` earlier than that.
 
-Let's go ahead and change `scheduleNextInspectionEvent` in `src/bootcamp/inspector-gadget/inspector_gadget.cc`. This is how the function should look like after the changes.
+Let's go ahead and change `scheduleNextInspectionEvent` in `src/bootcamp/inspector-gadget/inspector_gadget.cc`. This is how the function should look after the changes.
 
 ```cpp
 void
@@ -2164,7 +2168,7 @@ InspectorGadget::scheduleNextInspectionEvent(Tick when)
 
     if (have_packet && have_entry && !nextInspectionEvent.scheduled()) {
         Tick first_avail_insp_unit_time = \
-            std::min_element(
+            *std::min_element(
                             inspectionUnitAvailableTimes.begin(),
                             inspectionUnitAvailableTimes.end()
                             );
@@ -2207,7 +2211,7 @@ InspectorGadget::processNextInspectionEvent()
         stats.totalInspectionBufferLatency += curTick() - inspectionBuffer.frontTime();
         PacketPtr pkt = inspectionBuffer.front();
         inspectRequest(pkt);
-        outputBuffer.push(pkt, curTick());
+        outputBuffer.push(pkt, clockEdge(totalInspectionLatency));
         inspectionBuffer.pop();
         inspectionUnitAvailableTimes[i] = clockEdge(totalInspectionLatency);
         insp_window_left--;
@@ -2235,7 +2239,7 @@ Let's take a deeper look at how we process `nextInspectionEvent`. It's important
 
 1- We want to impose a limit on the number of entries at the front we will look at each time we process `nextInspectionEvent`. So we keep a copy of `inspectionWindow` and decrement each time we inspect a `request`. We break out of the loop as soon as `insp_window_left == 0`
 2- Iterations of the for-loop represent assignment of inspection to one inspection unit. Therefore, we need to check the following: **a**) if the inspection unit is available at `curTick`, **b**) if `inspectionBuffer` has items, and **c**) if there is an entry available in `outputBuffer`. We skip the inspection units that are busy and will break out of the loop when **b** or **c** do not hold.
-3- If every check has passed, we can now do the actual inspection and impose the latency. Now that we have a parameter for the latency of inspection, we will push `pkt` with a timestamp that is equivalent to `curTick + totalInspectionLatency` (this is what `clockEdge(totalInspectionLatency)` returns). We also need to make the inspection unit that we just assigned work to until the same time.
+3- If every check has passed, we can now do the actual inspection and impose the latency. Now that we have a parameter for the latency of inspection, we will push `pkt` with a timestamp that is equivalent to `curTick + totalInspectionLatency` (this is what `clockEdge(totalInspectionLatency)` returns). We also need to make the inspection unit that we just assigned work until the same time.
 4- After all the assignment of work is done, we need to make sure that the available time of all inspection units are bigger than or equal to `nextCycle`. Why?
 
 ---

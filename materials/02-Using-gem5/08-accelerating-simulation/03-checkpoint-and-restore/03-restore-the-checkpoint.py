@@ -56,11 +56,11 @@ requires(
 
 
 cache_hierarchy = PrivateL1CacheHierarchy(
-    l1d_size="32kB",
-    l1i_size="32kB"
+    l1d_size="32KiB",
+    l1i_size="32KiB"
 )
 
-memory = DualChannelDDR4_2400(size="3GB")
+memory = DualChannelDDR4_2400(size="3GiB")
 
 processor = SimpleProcessor(
     cpu_type=CPUTypes.TIMING,

@@ -53,7 +53,7 @@ requires(
 
 #
 
-# Let's set up a SingleChannelDDR4_2400 memory with 3GB size
+# Let's set up a SingleChannelDDR4_2400 memory with 3GiB size
 
 #
 

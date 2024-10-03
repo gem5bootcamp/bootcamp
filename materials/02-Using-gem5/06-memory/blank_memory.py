@@ -43,7 +43,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
 system.mem_mode = 'timing'
-system.mem_ranges = [AddrRange('512MB')] # Create an address range
+system.mem_ranges = [AddrRange('512MiB')] # Create an address range
 addr_range = system.mem_ranges[0]
 
 system.tgen = PyTrafficGen() # Create a traffic generator

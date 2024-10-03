@@ -15,7 +15,7 @@
 # ./run-experiment.sh
 #
 
-gem5 -re -d experiment_1 experiment.py "8kB" "8kB" && \
-gem5 -re -d experiment_2 experiment.py "16kB" "8kB" && \
-gem5 -re -d experiment_3 experiment.py "8kB" "16kB" && \
-gem5 -re -d experiment_4 experiment.py "16kB" "16kB"
+gem5 -re -d experiment_1 experiment.py "8KiB" "8KiB" && \
+gem5 -re -d experiment_2 experiment.py "16KiB" "8KiB" && \
+gem5 -re -d experiment_3 experiment.py "8KiB" "16KiB" && \
+gem5 -re -d experiment_4 experiment.py "16KiB" "16KiB"

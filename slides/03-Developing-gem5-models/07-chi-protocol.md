@@ -13,7 +13,7 @@ title: Using gem5's implementation of the CHI Protocol
 
 ## Example
 
-- Let's build a simple two-level cache hiearchy
+- Let's build a simple two-level cache hierarchy.
   - Private L1 caches
   - Shared L2/directory (home node)
 <!-- - Extend this to allow for multiple L2s (banked by address) -->
@@ -25,8 +25,8 @@ Code in [`materials/03-Developing-gem5-models/07-chi-protocol`](../../materials/
 
 ## Use some components
 
-- There are some components already available for CHI
-  - Just a `private_l1_moesi_cache` for now
+- There are some components already available for CHI.
+  - Just a `private_l1_moesi_cache` for now.
   - Point-to-point network
 
 See [`gem5/src/python/gem5/components/cachehierarchies/chi/nodes/private_l1_moesi_cache.py`](../../gem5/src/python/gem5/components/cachehierarchies/chi/nodes/private_l1_moesi_cache.py).
@@ -86,7 +86,7 @@ self.allow_SD = True
 
 ## Set more CHI parameters
 
-MOESI / Mostly inclusive for shared / Exclusive for unique
+MOESI / Mostly inclusive for shared / Exclusive for unique.
 
 ```python
 self.alloc_on_seq_acc = False
@@ -106,7 +106,7 @@ self.dealloc_backinv_shared = False
 
 ## Now, let's create the hierarchy
 
-Set the parameters we care about (and ignore others)
+Set the parameters we care about (and ignore others).
 
 ```python
 class PrivateL1SharedL2CacheHierarchy(AbstractRubyCacheHierarchy):
@@ -145,7 +145,7 @@ def incorporate_cache(self, board):
 
 ## Next, let's create the run script
 
-First, let's use the traffic generator. Put the following code in `run_test.py`
+First, let's use the traffic generator. Put the following code in `run_test.py`.
 
 ```python
 from hierarchy import PrivateL1SharedL2CacheHierarchy
@@ -155,7 +155,7 @@ board = TestBoard(
     cache_hierarchy=PrivateL1SharedL2CacheHierarchy(
         l1_size="32KiB", l1_assoc=8, l2_size="2MiB", l2_assoc=16,
     ),
-    memory=SingleChannelDDR4_2400(size="2GB"),
+    memory=SingleChannelDDR4_2400(size="2GiB"),
     clk_freq="3GHz",
 )
 sim = Simulator(board)
@@ -170,7 +170,7 @@ sim.run()
 > gem5-chi run_test.py
 ```
 
-stats.txt
+stats.txt:
 
 ```text
 simSeconds                               0.001000
@@ -210,7 +210,7 @@ cache_hierarchy = PrivateL1SharedL2CacheHierarchy(
 gem5 run-is.py
 ```
 
-You should see the following output pretty quickly
+You should see the following output pretty quickly.
 
 ```text
 ...
@@ -235,12 +235,12 @@ board.processor.switch0.core.commitStats0.ipc     0.149605
 
 We have an average miss latency of 185 cycles (lots of L2 misses!) and an IPC of 0.15.
 
-### Note: This example has not been debugged and may have FS issues
+### Note: This example has not been debugged and may have FS issues.
 
 ---
 
 ## Summary
 
-- We've created a simple two-level cache hierarchy using the CHI protocol
-- We've run a simple traffic generator and a full system simulation
-- We've seen how to set up the CHI protocol in gem5 with the standard library
+- We've created a simple two-level cache hierarchy using the CHI protocol.
+- We've run a simple traffic generator and a full system simulation.
+- We've seen how to set up the CHI protocol in gem5 with the standard library.

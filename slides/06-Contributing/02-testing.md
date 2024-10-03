@@ -23,7 +23,7 @@ In practice, if we asked for tests this way we would receive no contributions.
 ### Our outlook on testing
 
 - If a feature isn't tested, we don't "support it" (e.g., DRAMSim3).
-- If the "gem5 developers" want to add a supported feature, we are usually the ones to add a test.
+- If the "gem5 developers" want to add a supported feature, we are usually the ones to add tests.
 - Adding tests takes time away from fixing bugs, adding new features, etc.
 
 ---
@@ -31,11 +31,11 @@ In practice, if we asked for tests this way we would receive no contributions.
 ## gem5 Test Categories
 
 We run tests on the gem5 codebases regularly to ensure that changes do not break the code.
-These tests exist in four main categories;
+These tests exist in four main categories:
 
 1. **CPP Unit tests**: These are tests that run C++ code. In gem5, we use the Google Test framework.
 2. **Python Unit tests**: These are tests that run Python code. In gem5, we use the Python unittest framework.
-3. **TestLib Tests**: These are tests that run gem5 simulations, verify exit codes, and compare output to expected output ("testlib" is the name of the framework used to do this).
+3. **TestLib Tests**: These are tests that run gem5 simulations, verify exit codes, and compare output to expected output ("TestLib" is the name of the framework used to do this).
 4. **Compilation Tests**: Tests which compile gem5 under different configurations with different compilers/environments.
 
 > There are some tests we run which don't fit into these categories, but these are the main ones.
@@ -44,25 +44,26 @@ These tests exist in four main categories;
 
 ## gem5 Test Schedule
 
-1. **CI Tests**: These tests are run on every pull request to gem5, and every update to any pull request. The CI tests consist of the CPP and Python unit tests and a subset of the TestLib tests and Compilation tests. These are designed to run "quickly" (by gem5 standards), in under 4 hours.
+1. **CI Tests**: These tests are run on every pull request to gem5, and every update to any pull request.
+    - The CI tests consist of the CPP and Python unit tests and a subset of the TestLib tests and Compilation tests. These are designed to run "quickly" (by gem5 standards), in under 4 hours.
 2. **Daily Tests**: These tests are run every day on the gem5 codebase.
-These tests consist of the larger Testlib tests. They typically take 12 hours or more to complete.
+    - These tests consist of the larger TestLib tests. They typically take 12 hours or more to complete.
 3.  **Weekly Tests**: These tests are run weekly on the gem5 codebase.
-These tests consist of the largest Testlib test suite and the Compilation tests. These tests typically take 1 to 2 days to complete.
+    - These tests consist of the largest TestLib test suite and the Compilation tests. These tests typically take 1 to 2 days to complete.
 4. **Compiler Tests**: These tests are run every week.
-These run a cross product of gem5 compilation targets and compilers the project currently supports. These tests usually take around 12 hours to complete.
+    - These run a cross product of gem5 compilation targets and compilers the project currently supports. These tests usually take around 12 hours to complete.
 
 ---
 
 ## GitHub Actions
 
-The complete GitHub Actions workflow for these tests can be found in the [.github/workflows/](https://github.com/gem5/gem5/blob/v24.0/.github/workflows) in the gem5 repository.
+The complete GitHub Actions workflow for these tests can be found in [.github/workflows/](https://github.com/gem5/gem5/blob/v24.0/.github/workflows) in the gem5 repository.
 
-We not go over these in this session but you can look over these yaml files and see how GitHub Actions is triggered to run these the gem5 tests.
+We will not go over these in this session but you can look over these yaml files and see how GitHub Actions is triggered to run these the gem5 tests.
 
 These tests run on "self-hosted" runners. There is a machine at Wisconsin (loupe) which runs these tests.
 
-> Bonus points if you know what a "loupe" is
+> Bonus points if you know what a "loupe" is.
 
 ---
 
@@ -102,9 +103,10 @@ scons build/ALL/base/bitfield.test.opt
 More information on Python's unittest framework can be found at <https://docs.python.org/3/library/unittest.html>
 
 The tests are run with `gem5 tests/run_pyunit.py` command.
-In our case, any file in the "tests/pyunit" directory with the prefix "pyunit_" is considered a test by the test runner.
 
-Individual subdirectories in "tests/pyunit" can be specified and run separately by passing those subdirectories as arguments to "tests/run_pytests.py". E.g.: `gem5 tests/run_pyunit.py --directory tests/pyunit/util`.
+In our case, any file in the [tests/pyunit](https://github.com/gem5/gem5/tree/stable/tests/pyunit) directory with the prefix "pyunit_" is considered a test by the test runner.
+
+Individual subdirectories in [tests/pyunit](https://github.com/gem5/gem5/tree/stable/tests/pyunit) can be specified and run separately by passing those subdirectories as arguments to "tests/run_pytests.py". E.g.: `gem5 tests/run_pyunit.py --directory tests/pyunit/util`.
 
 ---
 
@@ -130,7 +132,7 @@ TestLib tests are the most important tests in gem5.
 These tests run gem5 simulations and verify the output of the simulation.
 The tests are written in Python and use the "testlib" framework to run the simulations and verify the output.
 
-We do not have very good coverage of unittests, so most of our testing is in integration tests via the TestLib.
+We do not have very good coverage of unit tests, so most of our testing is in integration tests via the TestLib.
 
 ---
 
@@ -145,7 +147,8 @@ It's useful to just focus on a subdirectory of tests when running tests:
 ```
 
 The above will only run the "quick" tests in the "tests/gem5/memory" directory.
-The "quick" tests are the testlib tests run in the CI pipeline. To run the tests in the "daily" or "weekly" test suites, you can use the `--length` to specify `long` or `very-long` (`quick` is the `length` default).
+
+The "quick" tests are the TestLib tests that are run in the CI pipeline. To run the tests in the "daily" or "weekly" test suites, you can use the `--length` to specify `long` or `very-long` (`quick` is the `length` default).
 
 ---
 
@@ -153,7 +156,7 @@ The "quick" tests are the testlib tests run in the CI pipeline. To run the tests
 
 The `./main.py list` command can be used to list all the tests in a directory, which we'll demonstrate here:
 
-```shell
+```bash
 # List all the long tests in tests/gem5/memory: Those run in the Daily Tests.
 ./main.py list --length long gem5/memory
 
@@ -165,10 +168,11 @@ The `./main.py list` command can be used to list all the tests in a directory, w
 
 ## How TestLib Tests are declared
 
-Let's look at ["tests/gem5/m5_util"](https://github.com/gem5/gem5/blob/v24.0/tests/gem5/m5_util) to see how a test is declared.
+Let's look at [tests/gem5/m5_util](https://github.com/gem5/gem5/blob/v24.0/tests/gem5/m5_util) to see how a test is declared.
 
 In this directory there is "test_exit.py".
-Any file with the prefix "test_" is considered a test by the testlib framework and will be automatically run when the tests are executed.
+
+Any file with the prefix "test_" is considered a test by the TestLib framework and will be automatically run when the tests are executed.
 
 "configs" is a directory of configuration scripts that are used to run the tests defined in "test_exit.py".
 
@@ -178,7 +182,7 @@ Now, let's look into "test_exit.py" and see how the tests are declared.
 
 ## Declaring how to test
 
-Import testlib library (found in `gem5/ext/testlib`)
+Import TestLib library (found in `gem5/ext/testlib`).
 
 ```python
 from testlib import *
@@ -186,7 +190,7 @@ from testlib import *
 
 Many of the tests use regex matching. For example, we check to see if the `m5_exit` instruction is encountered below and then create a *verifier*.
 
-**`verifier`** is used by the testlib to check the output.
+**`verifier`** is used by TestLib to check the output.
 
 ```py
 m5_exit_regex = re.compile(
@@ -261,27 +265,28 @@ TestUID:tests/gem5/m5_util/test_exit.py:m5_exit_test-ALL-x86_64-opt:m5_exit_test
 
 ## Running the tests
 
-Then run with
+Then run with:
 
 ```shell
 ./main.py run gem5/m5_util
 ```
 
-**Note**: This will try and build "ALL/gem5.opt" each time you run the tests.
-This can be time consuming.
+**Note**: This will try and build "ALL/gem5.opt" each time you run the tests. This can be time consuming.
+
 You can pre-build the ALL/gem5.opt build with `scons build/ALL/gem5.opt -j$(nproc)` then, when running `./main.py run gem5/m5_util` add the `--skip-build` flag to skip the build step: `./main.py run --skip-build gem5/m5_util`.
 
 If you want/need to build at this step, pass `-j$(nproc)` to the `./main.py run` command.
 
 ---
+<!-- _class: no-logo -->
 
 ## Exercise: Creating a TestLib Test
 
 Go to [materials/06-Contributing/02-testing/01-testlib-example](../../materials/06-Contributing/).
 
-Move "01-testlib-example" to "tests/gem5/" in the gem5 repository.
+Move `01-testlib-example` to [tests/gem5/](../../gem5/tests/gem5) in the gem5 repository.
 
-Provided in "test_example.py" is the `gem5_verify_config` function which is used to define testlib tests.
+Provided in `test_example.py` is the `gem5_verify_config` function which is used to define TestLib tests.
 
 ```python
 gem5_verify_config(

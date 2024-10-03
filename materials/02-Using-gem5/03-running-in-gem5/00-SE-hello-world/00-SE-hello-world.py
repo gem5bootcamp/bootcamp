@@ -52,11 +52,11 @@ binary_path = Path("/workspaces/2024/materials/02-Using-gem5/03-running-in-gem5/
 
 
 cache_hierarchy = PrivateL1CacheHierarchy(
-    l1d_size="64kB",
-    l1i_size="64kB",
+    l1d_size="64KiB",
+    l1i_size="64KiB",
 )
 
-memory = SingleChannelDDR4_2400("1GB")
+memory = SingleChannelDDR4_2400("1GiB")
 
 processor = SimpleProcessor(
     cpu_type = CPUTypes.TIMING,

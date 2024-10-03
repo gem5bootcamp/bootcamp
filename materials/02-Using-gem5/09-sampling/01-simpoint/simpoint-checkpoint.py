@@ -52,7 +52,7 @@ requires(isa_required=ISA.X86)
 
 cache_hierarchy = NoCache()
 
-memory = SingleChannelDDR3_1600(size="3GB")
+memory = SingleChannelDDR3_1600(size="3GiB")
 
 processor = SimpleProcessor(
     cpu_type=CPUTypes.ATOMIC,

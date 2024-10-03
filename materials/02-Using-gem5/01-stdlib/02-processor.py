@@ -42,14 +42,14 @@ class MyOutOfOrderProcessor(BaseCPUProcessor):
         pass
 
 
-main_memory = SingleChannelDDR4_2400(size="2GB")
+main_memory = SingleChannelDDR4_2400(size="2GiB")
 
 cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
+    l1d_size="16KiB",
     l1d_assoc=8,
-    l1i_size="16kB",
+    l1i_size="16KiB",
     l1i_assoc=8,
-    l2_size="256kB",
+    l2_size="256KiB",
     l2_assoc=16,
     num_l2_banks=1,
 )

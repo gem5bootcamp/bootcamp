@@ -13,7 +13,7 @@ memory = SingleChannelHBM(size="1GiB")
 
 generator = LinearGenerator(
     duration="250us",
-    rate="40GB/s",
+    rate="40GiB/s",
     num_cores=1,
     max_addr=memory.get_size(),
 )

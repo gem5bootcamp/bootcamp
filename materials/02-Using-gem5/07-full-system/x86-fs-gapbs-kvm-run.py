@@ -24,11 +24,11 @@ from gem5.components.cachehierarchies.classic.private_l1_private_l2_walk_cache_h
 
 # Here we setup a MESI Two Level Cache Hierarchy.
 cache_hierarchy = PrivateL1PrivateL2WalkCacheHierarchy(
-    l1d_size="16kB", l1i_size="16kB", l2_size="256kB"
+    l1d_size="16KiB", l1i_size="16KiB", l2_size="256KiB"
 )
 
 # Setup the system memory.
-memory = SingleChannelDDR3_1600(size="3GB")
+memory = SingleChannelDDR3_1600(size="3GiB")
 
 # Here we setup the processor.
 processor = SimpleProcessor(

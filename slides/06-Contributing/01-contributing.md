@@ -54,19 +54,19 @@ That's understandable.
 However, please keep the following in mind:
 
 1.  _Everyone_, even the most experienced gem5 devs, have had their changes rejected.
-There will always exist a pull-request on the gem5 GitHub so the changes are never "gone".
-The reasons for rejection are not personal, but are often concerns about how it will affect users or long term maintainability.
-If a change would be a lot of time to implement, try contacting the community to see if it'd be welcome before starting.
+The pull request will always exist on the gem5 GitHub so the changes are never "gone".
+  - The reasons for rejection are not personal, but are often concerns about how it will affect users or long term maintainability.
+  - If a change would take a lot of time to implement, try contacting the community to see if it'd be welcome before starting.
 2. The gem5 devs are nice people and are not trying to be mean.
-We have to critique code contributed but we try our best to ensure it's constructive. Where possible we'll suggest how address our concerns.
-Again, nothing is personal.
+  - We have to critique code contributed but we try our best to ensure it's constructive. Where possible we'll suggest how address our concerns.
+  - Again, nothing is personal.
 
 ---
 
 3. Very very few changes of any magnitude are accepted without some back and forth requests.
-Everyone who's worked on gem5 long enough has changes that needed 5 or 6 iterations before they were accepted. It shouldn't be feared or seen as a bad thing.
+  - Everyone who's worked on gem5 long enough has changes that needed 5 or 6 iterations before they were accepted. It shouldn't be feared or seen as a bad thing.
 4. No one fully understands the gem5 codebase.
-There are parts of gem5 no one understands. It's ok to feel you don't understand the codebase completely, but it's not a reason to not contribute to the parts you do.
+  - There are parts of gem5 no one understands. It's ok to feel you don't understand the codebase completely, but it's not a reason to not contribute to the parts you do.
 
 ---
 
@@ -85,7 +85,7 @@ If you just want to try contributing, but don't have a specific idea, try lookin
 A large part of avoiding or fixing changes to get around this regards testing.
 2. _Something for which we can't validate correctness, now or in the future_: If you've developed something that's hard to test, or that we can't easily validate is correct, it's unlikely to be accepted. We can't just read the code and always understand that it's functional. **To avoid this provide tests with your changes** (more of this later).
 3. _Features that are overly niche and lack general applicability to the typical gem5 user_: If it's something you and only one or two other people will use, it's unlikely to be accepted. In these cases it's probably better to maintain a fork of gem5 with your changes.
-4. _It doesn't conform our standards_:  (typically style guidelines) the code is fine, it works, but you need to make some changes to make it conform to our style guidelines. This is a common reason for changes to be rejected, but it's also one of the easiest to fix.
+4. _It doesn't conform our standards_  (typically style guidelines): The code is fine, it works, but you need to make some changes to make it conform to our style guidelines. This is a common reason for changes to be rejected, but it's also one of the easiest to fix.
 
 ---
 
@@ -117,12 +117,11 @@ git clone https://github.com/your-username/gem5.git
 
 ## Your forked repo: Some tips and good housekeeping
 
-- In gem5, don't  makes changes to your repo's `stable` and `develop` branch.
-It's best to keep these as branches as reference to the main gem5 repo.
-Instead create new branch from these:
+- In gem5, don't  makes changes to your repo's `stable` and `develop` branch. It's best to keep these as branches as reference to the main gem5 repo.
+- Instead create new branches using these:
 
 ```shell
-git switch develop # Gets the branch locally the first time it is run
+git switch develop # Gets the develop branch locally the first time it is run
 git branch -c develop new-branch.
 ```
 
@@ -148,26 +147,26 @@ In gem5, developers' changes are only merged into the `develop` branch. The `dev
 
 There are multiple ways to do this.
 
-1. Via the web interface: Go to your forked repo on GitHub go to the `stable` or `develop` branch and click the "Fetch upstream" button "sync fork" (note: you have to do this for each branch). Then pull the changes into your local repo with `git pull origin stable` and/or `git pull origin develop`.
+1. Via the web interface: Go to your forked repo on GitHub. Go to the `stable` or `develop` branch and click the "Sync fork" button (note: you have to do this for each branch). Then pull the changes into your local repo with `git pull origin stable` and/or `git pull origin develop`.
 2. Use the GitHub CLI: `gh repo sync {username}/gem5 -b develop && gh repo sync {username}/gem5 -b stable` will sync your forked repo (on GitHub) with the main gem5 repo.
 You can then pull the changes into your local repo with `git switch stable && git pull && git switch develop && git pull`.
 
 > **Note**: We will not cover this in this tutorial. See (https://cli.github.com/)
 
-3. Through the git tool in your local repo by fetching the (the main gem5 repo) and merge the upstream into your local repo.
+3. Through the Git tool in your local repo by fetching the main gem5 repo and merging the upstream into your local repo.
 
 ---
+<!-- _class: no-logo -->
 
 ## Syncing your local repo
 
 ```shell
 git remote -v
 ```
-Typically you'll have an `origin` which is your GitHub repo you pulled this from.
-GitHub will also add a remote called `upstream`, for forked repos, which is the main gem5 repo.
-We'll keep with this naming convention, but please be aware these "remotes" can be named anything.
+Typically you'll have an `origin` which is your GitHub repo which you pulled this from. GitHub will also add a remote called `upstream`, for forked repos, which is the main gem5 repo.
+- We'll keep with this naming convention, but please be aware these "remotes" can be named anything.
 
-If you need to add the upstream you can do with
+If you need to add the upstream you can do with:
 
 ```shell
 git remote add upstream https://github.com/gem5/gem5.git
@@ -197,7 +196,7 @@ git push origin develop
 **Please note:** To push to your GitHub you'll need to authenticate yourself on the system you're using.
 There's a few ways to do this and may be dependent on how you've set up your GitHub account. We won't cover this here, but you can find out more here: <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github>. Pushing in this tutorial isn't important. You can figure this out in your own time.
 
-> [More on github's help page](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+> More on  [GitHub's help page](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
 
 ---
 
@@ -234,8 +233,7 @@ git add hello.txt
 git commit -m "misc: Adding goodbye to hello.txt"
 ```
 
-Please, for now, include `misc:` in your commit messages.
-This will be explained later.
+Please, for now, include `misc:` in your commit messages. This will be explained later.
 
 ---
 
@@ -248,7 +246,7 @@ The first time you'll likely need to set the upstream branch with:
 git push --set-upstream origin my-change
 ```
 
-This is done to inform your git repo that this local branch is to be pushed to the "origin" remote (your GitHub repo) and that it should track the remote branch. This is what `--set-upstream` does.
+This is done to inform your Git repo that this local branch is to be pushed to the "origin" remote (your GitHub repo) and that it should track the remote branch. This is what `--set-upstream` does.
 
 **Note**: It's unfortunate "upstream" is used in two different contexts here. In this case upstream is your GitHub based repo: it is what is immediately "upstream" to this your local repo. However the upstream in `git remote -v` is the main gem5 repo. In this case it's what's "upstream" from origin.
 There's a chain of upstreams: your local repo contributes upstream to your GitHub repo which, via a pull request, contributes upstream to the main gem5 repo.
@@ -289,9 +287,11 @@ If the CI tests fail or a reviewer requests changes before approval you'll need 
 
 ---
 
+<!-- _class: no-logo -->
+
 ## Updating the PR
 
-In Github, all you need to do is update the branch you've submitted the PR from on Github.
+In GitHub, all you need to do is update the branch you've submitted the PR from on GitHub.
 (i.e., the branch from your forked repo).
 
 ### Add a commit
@@ -315,6 +315,7 @@ git push origin my-change
 ## Rebasing when gem5 is updated
 
 You can _rebase_ your branch to make changes to existing commits in it.
+
 This is useful if you need to change a commit message or change the order of commits, change contents of commits, merge commits, or delete commits.
 
 It is very powerful but can be dangerous if you're not sure what you're doing.
@@ -344,7 +345,7 @@ pick a1b2c3d misc: Adding bla to hello.txt
 pick e4f5g6h misc: Adding goodbye to hello.txt
 ```
 
-delete commits:
+Delete commits:
 
 ```shell
 pick i7j8k9l misc: Adding hello.txt
@@ -359,6 +360,7 @@ reword a1b2c3d misc: Adding bla to hello.txt
 ```
 
 ---
+<!-- _class: no-logo -->
 
 ## Rebasing
 
@@ -369,7 +371,7 @@ edit i7j8k9l misc: Adding hello.txt
 reword a1b2c3d misc: Adding bla to hello.txt
 ```
 
-or squash commits:
+Or squash commits:
 
 ```shell
 pick i7j8k9l misc: Adding hello.txt
@@ -377,9 +379,8 @@ fixup a1b2c3d misc: Adding bla to hello.txt
 ```
 
 **Warning**: Rebase errors can arise (similar to merge conflicts) and can be difficult to fix.
-If you're not sure what you're doing, it's best to avoid rebasing and just add commits.
-Generally though, using `fixup` and `squash` are safe, as is `reword`.
-Difficulties arise when moving, deleting, or editing commits.
+- If you're not sure what you're doing, it's best to avoid rebasing and just add commits.
+- Generally though, using `fixup` and `squash` are safe, as is `reword`. Difficulties arise when moving, deleting, or editing commits.
 
 ---
 
@@ -393,12 +394,13 @@ The following are basic requirements for a PR to be accepted:
 - Commit messages contain a Change-Id.
 
 ---
+<!-- _class: no-logo -->
 
 ## Using `pre-commit`
 
 Fortunately there's a tool which can help with _most_ of this: Python `pre-commit`.
-`pre-commit` is a tool that runs a series of checks on your code before you commit it.
-It checks for code style and formatting issues, and runs some other basic checks in your local repo, allowing you to catch problems before you submit a PR.
+- `pre-commit` is a tool that runs a series of checks on your code before you commit it.
+ - It checks for code style, formatting issues, and runs some other basic checks in your local repo, allowing you to catch problems before you submit a PR.
 
 
 For the following `pre-commit` will detect and automatically and correct any problems:
@@ -418,7 +420,7 @@ For now CPP formatting is a manual process.
 
 ## Installing pre-commit
 
-`pre-commit` triggers a series of checks when `git commit` is run. It is a git hook which is executed before the commit is made.
+`pre-commit` triggers a series of checks when `git commit` is run. It is a Git hook which is executed before the commit is made.
 
 To install `pre-commit` execute the following:
 
@@ -461,7 +463,7 @@ Issue: https://github.com/gem5/gem5/issues/123
 
 ## Formatting a commit message
 
-A description may spawn multiple paragraphs if desired. It can be useful to add metadata about the change at the end. In particular, a link to the Issue it addresses is helpful.
+A description may spawn multiple paragraphs if desired. It can be useful to add metadata about the change at the end. In particular, a link to the issue it addresses is helpful.
 
 **Important**:
 
@@ -530,10 +532,10 @@ class ExampleClass
 
 ## Spacing
 
-- One space between keywords (if, for, while, etc.) and opening parentheses
-- One space around binary operators (+, -, <, >, etc.) including assignment operators (=, +=, etc.)
-- No space around ‘=’ when used in parameter/argument lists, either to bind default parameter values (in Python or C++) or to bind keyword arguments (in Python)
-- No space between function names and opening parentheses for arguments
+- One space between keywords (if, for, while, etc.) and opening parentheses.
+- One space around binary operators (+, -, <, >, etc.) including assignment operators (=, +=, etc.).
+- No space around ‘=’ when used in parameter/argument lists, either to bind default parameter values (in Python or C++) or to bind keyword arguments (in Python).
+- No space between function names and opening parentheses for arguments.
 - No space immediately inside parentheses, except for very complex expressions. Complex expressions are preferentially broken into multiple simpler expressions using temporary variables.
 
 ---
@@ -549,6 +551,7 @@ class ExampleClass
 This includes function arguments (e.g., `myFunction(int arg_one, int arg_two)`).
 
 ---
+<!-- _class: no-logo -->
 
 ## Another code example
 
@@ -573,7 +576,7 @@ class FooBarCPU
 
 ---
 
-<!-- _class: code-60-percent -->
+<!-- _class: code-60-percent no-logo -->
 
 ## Include blocks
 

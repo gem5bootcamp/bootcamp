@@ -90,11 +90,11 @@ from gem5.simulate.simulator import Simulator
 
 ```python
 cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
+    l1d_size="16KiB",
     l1d_assoc=8,
-    l1i_size="16kB",
+    l1i_size="16KiB",
     l1i_assoc=8,
-    l2_size="256kB",
+    l2_size="256KiB",
     l2_assoc=16,
     num_l2_banks=1,
 )
@@ -479,16 +479,16 @@ This adds a two-level cache hierarchy and a memory system.
 
 ```python
 cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
+    l1d_size="16KiB",
     l1d_assoc=8,
-    l1i_size="16kB",
+    l1i_size="16KiB",
     l1i_assoc=8,
-    l2_size="256kB",
+    l2_size="256KiB",
     l2_assoc=16,
     num_l2_banks=1,
 )
 
-memory = SingleChannelDDR3_1600(size="3GB")
+memory = SingleChannelDDR3_1600(size="3GiB")
 ```
 
 ---

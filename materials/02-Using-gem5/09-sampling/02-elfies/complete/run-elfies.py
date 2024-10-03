@@ -56,7 +56,7 @@ cache_hierarchy = PrivateL1SharedL2CacheHierarchy(
     l2_assoc=16
 )
 
-memory = DualChannelDDR4_2400("3GB")
+memory = DualChannelDDR4_2400("3GiB")
 
 processor = SimpleProcessor(
     # This processor uses a simple timing CPU with 8 cores
